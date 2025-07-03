@@ -2,8 +2,8 @@
 #define STRUCT_ATIVIDADE_H
 
 typedef struct Atividade {
-  char *titulo;
-  char *horario;
+  char titulo[100];
+  char horario[10];
 } Atividade;
 
 #endif
