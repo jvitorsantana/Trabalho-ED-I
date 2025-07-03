@@ -1,4 +1,4 @@
-#include "estruturas/struct_evento.h"
+#include "../estruturas/struct_evento.h"
 
 #ifndef LISTA_CICULAR_EVENTOS_H
 #define LISTA_CIRCULAR_EVENTOS_H
