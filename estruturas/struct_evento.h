@@ -4,6 +4,6 @@
 typedef struct Evento {
   char *nome;
   char *data;
-} Evento;
+}Evento;
 
 #endif
