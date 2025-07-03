@@ -64,4 +64,4 @@ A universidade realiza eventos, e cada evento possui várias atividades. Cada at
 ### Outras
 
 * [ ] Desfazer a última remoção usando pilha
-* [ ] Ordenar e exibir atividades ou participantes confome solicitado no menu
+* [ ] Ordenar e exibir atividades ou participantes conforme solicitado no menu
