@@ -61,7 +61,7 @@ A universidade realiza eventos, e cada evento possui várias atividades. Cada at
 
 * [ ] Realizar check-in
 
-### Outas
+### Outras
 
 * [ ] Desfazer a última remoção usando pilha
 * [ ] Ordenar e exibir atividades ou participantes confome solicitado no menu
