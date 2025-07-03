@@ -6,7 +6,7 @@
 #include <string.h>
 
 typedef struct Participante {
-  char matricula[10];
+  char matricula[25];
   char nome[50];
   char email[50];
 } Participante;

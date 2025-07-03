@@ -1,5 +1,6 @@
+#include "../estruturas/struct_participante.h" 
+
 #ifndef PILHA_PARTICIPANTE_H
-#include "estruturas/struct_participante.h" 
 #define PILHA_PARTICIPANTE_H
 
 
@@ -13,6 +14,9 @@ typedef struct PilhaParticipante{
 } PilhaParticipante;
 
 
-// void 
+PilhaParticipante *inicializarPilhaParticipantes();
+int empilharParticipante(PilhaParticipante *pilha, Participante Participante);
+int desempilharParticipante(PilhaParticipante *pilha, Participante *destino);
+void liberarPilha(PilhaParticipante *pilha);
 
 #endif

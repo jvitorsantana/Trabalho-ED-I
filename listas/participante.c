@@ -1,14 +1,16 @@
 #include "lista_duplamente_encadeada_participante.h"
 #include "pilha_participante.h"
-#include "estruturas/struct_participante.h"
+#include "../estruturas/struct_participante.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 // Manipulação de pilha
 
-void inicializarPilhaParticipantes(PilhaParticipante* pilha){
-    pilha->topo = NULL;
+PilhaParticipante *inicializarPilhaParticipantes(){
+    PilhaParticipante *p = (PilhaParticipante *)malloc(sizeof(PilhaParticipante));
+    p->topo = NULL;
+    return p;
 }
 
 int empilharParticipante(PilhaParticipante* pilha, Participante participante){
@@ -36,7 +38,7 @@ int desempilharParticipante(PilhaParticipante* pilha, Participante* destino){
 }
 
 void liberarPilha(PilhaParticipante* pilha){
-    NoParticipante p;
+    Participante p;
     while(desempilharParticipante(pilha, &p));
 }
 
@@ -181,7 +183,7 @@ int desfazerRemocaoParticipante(ListaParticipante** lista, PilhaParticipante* pi
     return inserirParticipante(lista, novoParticipante);
 }
 
-ListaParticipante* imprimirListaOrdenada(ListaParticipante* lista){
+ListaParticipante* ordernarListaParticipantesPeloNome(ListaParticipante* lista){
     if (lista == NULL || lista->proximo == NULL){
         return lista;
     }
@@ -200,8 +202,8 @@ ListaParticipante* imprimirListaOrdenada(ListaParticipante* lista){
         meio->anterior = NULL;
     }
 
-    ListaParticipante* esquerda = imprimirListaOrdenada(lista);
-    ListaParticipante* direita = imprimirListaOrdenada(meio);
+    ListaParticipante* esquerda = ordernarListaParticipantesPeloNome(lista);
+    ListaParticipante* direita = ordernarListaParticipantesPeloNome(meio);
 
     ListaParticipante* resultado = NULL;
     ListaParticipante** ponteiroAtual = &resultado;
@@ -233,15 +235,32 @@ ListaParticipante* imprimirListaOrdenada(ListaParticipante* lista){
         atual = atual->proximo;
     }
     
-    atual = resultado;
-    printf("\n Lista de Participantes Ordenada por Nome: \n");
-    while (atual != NULL){
-        printf("Nome: %s | Matrícula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
-        atual = atual->proximo;
-    }
+    /*
+        ----------------------------------------------------------------------------------------
+        Não printar pq ele vai mostrar mais de uma vez no terminal (lado esquerdo e dps os dois)
+        ----------------------------------------------------------------------------------------
+    */
+
+    // atual = resultado;
+    // printf("\n Lista de Participantes Ordenada por Nome: \n");
+    // while (atual != NULL){
+    //     printf("Nome: %s | Matrícula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
+    //     atual = atual->proximo;
+    // }
     
     // antes que me perguntem, tem que retornar se não a cabeça ainda vai apontar pro antiga cabeça 
     return resultado;
+}
+
+void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
+    ListaParticipante *resultado = ordernarListaParticipantesPeloNome(lista);
+    ListaParticipante *atual = resultado;
+    printf("Lista dos Participantes Ordenada Pelo Nome\n");
+    while (atual != NULL) {
+        printf("Nome: %s | Matricula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
+        atual = atual->proximo;
+    }
+    printf("\n");
 }
 
 
