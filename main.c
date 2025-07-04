@@ -136,11 +136,11 @@ void menuEditarEvento(Evento *e) {
         fflush(stdin);
         getchar();
         char *horario_atividade = digitarHorarioAtividade();
-        // getchar();
         fflush(stdin);
 
         e->atividades = inserirAtividade(e->atividades, nome_atividade, horario_atividade);
-
+        free(nome_atividade);
+        free(horario_atividade);
         break;
       case '2':
         limparTerminal();
@@ -148,11 +148,25 @@ void menuEditarEvento(Evento *e) {
         pausarTerminal();
         break;
       case '3':
-        printf("Funcao de remover atividade aq");
+        getchar();
+        fflush(stdin);
+        char *nome_remover = digitarNomeAtividade();
+        e->atividades = removerAtividade(e->atividades, nome_remover);
+        free(nome_remover);
+        pausarTerminal();
         break;
       case '4':
+        getchar();
         fflush(stdin);
-        menuVerAtividade();
+        char *atividade = digitarNomeAtividade();
+        ListaAtividade *atividades = buscarAtividade(e->atividades, atividade);
+        if (atividades == NULL) {
+          printf("ERRO: Atividade '%s' nao encontrada!\n", atividade);
+          pausarTerminal();
+        } else {
+          menuVerAtividade(&atividades->info);
+        }
+        free(atividade);
         break;
       case 'Z':
       case 'z':
@@ -168,15 +182,15 @@ void menuEditarEvento(Evento *e) {
   }
 }
 
-void menuVerAtividade() {
+void menuVerAtividade(Atividade *atividade) {
   char opcaoMenuVerAtividade = '\0';
   while (opcaoMenuVerAtividade != '0') {
     fflush(stdin);
     limparTerminal();
     getchar();
 
-    printf("Titulo: %s", "MiniCurso MySQL\n");
-    printf("Horario: %s", "22:31 as 22:49\n\n");
+    printf("Titulo: %s\n", atividade->titulo);
+    printf("Horario: %s\n\n", atividade->horario);
     printf("1 » Gerenciar Participantes\n");
     printf("0 » Voltar\n");
     printf("➜ ");
