@@ -3,13 +3,19 @@
 #include <string.h>
 #include "../estruturas/struct_evento.h"
 #include "lista_circular_eventos.h"
+#include "lista_encadeada_atividade.h"
+
+
+
+
 
 ListaEventos* inicializar(){
     return NULL;
 }
 
-ListaEventos* inserir_evento(ListaEventos *lista, const char *nome, const char *data){
-    ListaEventos *busca = buscar_evento(lista, nome);
+
+ListaEventos* inserirEvento(ListaEventos *lista, char nome[], char data[]){
+    ListaEventos *busca = buscarEvento(lista, nome);
     if(busca != NULL){
         printf("Evento com nome '%s' já existe.\n", nome);
         return lista;
@@ -20,9 +26,11 @@ ListaEventos* inserir_evento(ListaEventos *lista, const char *nome, const char *
         return lista;
     }
 
+    strncpy(novo_evento->info.nome, nome, sizeof(novo_evento->info.nome) - 1);
+    novo_evento->info.nome[sizeof(novo_evento->info.nome) - 1] = '\0';
 
-    novo_evento->info.nome = strdup(nome);
-    novo_evento->info.data = strdup(data);
+    strncpy(novo_evento->info.data, data, sizeof(novo_evento->info.data) - 1);
+    novo_evento->info.data[sizeof(novo_evento->info.data) - 1] = '\0';
 
     if(lista == NULL){
         novo_evento->prox = novo_evento;
@@ -31,6 +39,7 @@ ListaEventos* inserir_evento(ListaEventos *lista, const char *nome, const char *
         printf("Data: %s \n", novo_evento->info.data);
         return novo_evento;
     }
+
     novo_evento->prox = lista->prox;
     lista->prox = novo_evento;
     printf("Evento foi inserido: \n");
@@ -39,18 +48,18 @@ ListaEventos* inserir_evento(ListaEventos *lista, const char *nome, const char *
     return novo_evento;
 }
 
-void remove_aux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual){
+void removeAux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual){
     anterior->prox = atual->prox;
     if(atual == *lista){
         *lista = anterior;
     }
-    free(atual->info.nome);
-    free(atual->info.data);
+    // free(atual->info.nome);
+    // free(atual->info.data);
     free(atual);
 }
 
 
-ListaEventos* remover_evento(ListaEventos *lista, const char *nome){
+ListaEventos* removerEvento(ListaEventos *lista, char nome[]){
     if(!lista){
         return NULL;
     }
@@ -74,7 +83,7 @@ ListaEventos* remover_evento(ListaEventos *lista, const char *nome){
 }
 
 
-void imprimir_lista_circular(ListaEventos *lista){
+void imprimirListaCircular(ListaEventos *lista){
     if(lista == NULL){
         return;
     }
@@ -85,14 +94,14 @@ void imprimir_lista_circular(ListaEventos *lista){
     }while(atual != lista->prox);
 }
 
-void liberar_lista_circular(ListaEventos *lista) {
+void liberarListaCircular(ListaEventos *lista) {
     if (lista == NULL) {
         return;
     }
 
     if (lista->prox == lista) {
-        free(lista->info.nome);
-        free(lista->info.data);
+        // free(lista->info.nome);
+        // free(lista->info.data);
         free(lista);
         return;
     }
@@ -103,17 +112,17 @@ void liberar_lista_circular(ListaEventos *lista) {
     while (auxiliar != lista) {
         a_remover = auxiliar;
         auxiliar = auxiliar->prox;
-        free(a_remover->info.nome);
-        free(a_remover->info.data);
+        // free(a_remover->info.nome);
+        // free(a_remover->info.data);
         free(a_remover);
     }
 
-    free(lista->info.nome);
-    free(lista->info.data);
+    // free(lista->info.nome);
+    // free(lista->info.data);
     free(lista);
 }
 
-ListaEventos* buscar_evento(ListaEventos *lista, const char *nome) {
+ListaEventos* buscarEvento(ListaEventos *lista, char nome[]) {
     if (lista == NULL){
         return NULL;
     }

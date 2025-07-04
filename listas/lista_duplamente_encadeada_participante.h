@@ -12,9 +12,9 @@ typedef struct ListaParticipante {
   Participante info;
   struct ListaParticipante *anterior;
   struct ListaParticipante *proximo;
-  Participante info;
-  struct ListaParticipante *ant;
-  struct ListaParticipante *prox;
+  // Participante info;
+  // struct ListaParticipante *ant;
+  // struct ListaParticipante *prox;
 } ListaParticipante;
 
 ListaParticipante *inicializarListaDuplamenteEncadeada();

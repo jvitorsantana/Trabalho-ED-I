@@ -12,10 +12,10 @@ typedef struct ListaAtividade {
 } ListaAtividade;
 
 ListaAtividade *inicializar();
-ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *horario);
-ListaAtividade *removerAtividade(ListaAtividade *lista, char *nome);
+ListaAtividade *inserirAtividade(ListaAtividade *lista, char titulo[], char horario[]);
+ListaAtividade *removerAtividade(ListaAtividade *lista, char nome[]);
 void exibirAtividades(ListaAtividade *lista);
 void liberarAtividades(ListaAtividade *lista);
-ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo);
+ListaAtividade *buscarAtividade(ListaAtividade *lista, char titulo[]);
 
 #endif

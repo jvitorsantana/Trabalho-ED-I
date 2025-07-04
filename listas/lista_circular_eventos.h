@@ -8,14 +8,14 @@ typedef struct listaeventos {
   struct listaeventos *prox;
 } ListaEventos;
 
-ListaEventos* inicializar();
 
-ListaEventos* inserir_evento(ListaEventos *lista, const char *nome, const char *data);
-void remove_aux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual);
-ListaEventos* remover_evento(ListaEventos *lista, const char *nome);
-void imprimir_lista_circular(ListaEventos *lista);
-void liberar_lista_circular(ListaEventos *lista);
-ListaEventos* buscar_evento(ListaEventos *lista, const char *nome);
+ListaEventos* inicializar();
+ListaEventos* inserirEvento(ListaEventos *lista, char nome[], char data[]);
+void removeAux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual);
+ListaEventos* removerEvento(ListaEventos *lista, char nome[]);
+void imprimirListaCircular(ListaEventos *lista);
+void liberarListaCircular(ListaEventos *lista);
+ListaEventos* buscarEvento(ListaEventos *lista, char nome[]);
 
 
 #endif

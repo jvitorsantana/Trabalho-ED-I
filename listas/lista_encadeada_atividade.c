@@ -8,7 +8,7 @@ ListaAtividade *inicializar(){
   return NULL;
 }
 
-ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *horario) {
+ListaAtividade *inserirAtividade(ListaAtividade *lista, char titulo[], char horario[]) {
     ListaAtividade *busca = buscarAtividade(lista, titulo);
     if (busca != NULL) {
       printf("Atividade com título '%s' já existe.\n", titulo);
@@ -34,7 +34,7 @@ ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *hora
 }
       
 
-ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo){
+ListaAtividade *removerAtividade(ListaAtividade *lista, char titulo[]){
   ListaAtividade *atual = lista;
   ListaAtividade *anterior = NULL;
   
@@ -89,7 +89,7 @@ void liberarAtividades(ListaAtividade *lista) {
   }
 }
 
-ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo) {
+ListaAtividade *buscarAtividade(ListaAtividade *lista, char titulo[]) {
   ListaAtividade *atual = lista;
   while (atual != NULL) {
     if (strcmp(atual->info->titulo, titulo) == 0) {
