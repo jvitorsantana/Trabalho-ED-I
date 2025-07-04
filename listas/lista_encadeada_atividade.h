@@ -1,9 +1,7 @@
+#include "../estruturas/struct_atividade.h"
+
 #ifndef LISTA_ENCADEADA_ATIVIDADES_H
-
 #define LISTA_ENCADEADA_ATIVIDADES_H
-
-#include "struct_atividade.h"
-#include "lista_duplamente_encadeada_participante.h"
 
 typedef struct ListaAtividade {
     Atividade *info;
