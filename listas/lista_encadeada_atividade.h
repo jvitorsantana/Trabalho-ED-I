@@ -16,5 +16,6 @@ ListaAtividade *removerAtividade(ListaAtividade *lista, char *nome);
 void exibirAtividades(ListaAtividade *lista);
 void liberarAtividades(ListaAtividade *lista);
 ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo);
+ListaAtividade *ordenarListaAtividadesPorHorario(ListaAtividade *lista);
 
 #endif

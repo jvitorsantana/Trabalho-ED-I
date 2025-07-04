@@ -91,6 +91,7 @@ ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo){
 }
 
 void exibirAtividades(ListaAtividade *lista){
+  lista = ordenarListaAtividadesPorHorario(lista);
   ListaAtividade *atual = lista;
   if(atual == NULL){
     printf("Nenhuma atividade cadastrada.\n");
@@ -122,4 +123,44 @@ ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo) {
     atual = atual->prox;
   }
   return NULL; // Atividade não encontrada
+}
+
+ListaAtividade* ordenarListaAtividadesPorHorario(ListaAtividade *lista) {
+  if (lista == NULL || lista->prox == NULL)
+    return lista; // já está ordenada
+
+  int trocou;
+  ListaAtividade *anterior, *atual, *proximo;
+
+  do {
+    trocou = 0;
+    anterior = NULL;
+    atual = lista;
+
+    while (atual != NULL && atual->prox != NULL) {
+      proximo = atual->prox;
+
+      if (strcmp(atual->info->horario, proximo->info->horario) > 0) { 
+        if (anterior == NULL) { 
+          atual->prox = proximo->prox;
+          proximo->prox = atual;
+          lista = proximo; 
+          anterior = proximo;
+        } else {
+          anterior->prox = proximo;
+          atual->prox = proximo->prox;
+          proximo->prox = atual;
+          anterior = proximo;
+        }
+
+        trocou = 1;
+      } else {
+        anterior = atual;
+        atual = atual->prox;
+      }
+    }
+
+  } while (trocou);
+
+  return lista;
 }
