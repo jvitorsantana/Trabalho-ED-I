@@ -47,7 +47,7 @@ A universidade realiza eventos, e cada evento possui várias atividades. Cada at
 
 ### Atividades (por evento)
 
-* [] Cadastrar
+* [ ] Cadastrar
 * [x] Listar
 * [x] Remover
 
