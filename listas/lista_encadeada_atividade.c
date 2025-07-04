@@ -20,15 +20,9 @@ ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *hora
       return lista;
     }
 
-    nova->info = (Atividade *) malloc(sizeof(Atividade));
-    if (nova->info == NULL) {
-      printf("Erro ao alocar memória para informações da atividade.\n");
-      free(nova);
-      return lista;
-    }
-
-    strcpy(nova->info->titulo, titulo);
-    strcpy(nova->info->horario, horario);
+    strcpy(nova->info.titulo, titulo);
+    strcpy(nova->info.horario, horario);
+    // nova->info.participantes = NULL;
     nova->prox = lista;
     return nova;
 }
@@ -39,7 +33,7 @@ ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo){
   ListaAtividade *anterior = NULL;
   
   while(atual != NULL){
-    if(strcmp(atual->info->titulo, titulo) == 0){
+    if(strcmp(atual->info.titulo, titulo) == 0){
       break;
     }
     anterior = atual;
@@ -58,7 +52,6 @@ ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo){
     anterior->prox = atual->prox;
   }
 
-  free(atual->info);
   free(atual);
   
   printf("Atividade '%s' removida com sucesso.\n", titulo);
@@ -74,7 +67,7 @@ void exibirAtividades(ListaAtividade *lista){
   }
   printf("Atividades cadastradas: \n");
   while (atual != NULL){
-    printf("Título: %s, Horário: %s\n", atual->info->titulo, atual->info->horario);
+    printf("Título: %s, Horário: %s\n", atual->info.titulo, atual->info.horario);
     atual = atual->prox;
   }
 }
@@ -83,7 +76,6 @@ void liberarAtividades(ListaAtividade *lista) {
   ListaAtividade *atual = lista;
   while (atual != NULL) {
     ListaAtividade *prox = atual->prox;
-    free(atual->info);
     free(atual);
     atual = prox;
   }
@@ -92,7 +84,7 @@ void liberarAtividades(ListaAtividade *lista) {
 ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo) {
   ListaAtividade *atual = lista;
   while (atual != NULL) {
-    if (strcmp(atual->info->titulo, titulo) == 0) {
+    if (strcmp(atual->info.titulo, titulo) == 0) {
       return atual;
     }
     atual = atual->prox;

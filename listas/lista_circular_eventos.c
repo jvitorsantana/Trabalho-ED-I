@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../estruturas/struct_evento.h"
-#include "lista_circular_eventos.h"
 
-ListaEventos* inicializar(){
+#include "lista_circular_eventos.h"
+#include "../estruturas/struct_evento.h"
+
+ListaEventos* inicializarListaEventos(){
     return NULL;
 }
 
-ListaEventos* inserir_evento(ListaEventos *lista, const char *nome, const char *data){
+ListaEventos* inserir_evento(ListaEventos *lista, char nome[], char data[]){
     ListaEventos *busca = buscar_evento(lista, nome);
     if(busca != NULL){
         printf("Evento com nome '%s' já existe.\n", nome);
@@ -20,9 +21,13 @@ ListaEventos* inserir_evento(ListaEventos *lista, const char *nome, const char *
         return lista;
     }
 
+    strncpy(novo_evento->info.nome, nome, sizeof(novo_evento->info.nome) - 1);
+    novo_evento->info.nome[sizeof(novo_evento->info.nome) - 1] = '\0';
 
-    novo_evento->info.nome = strdup(nome);
-    novo_evento->info.data = strdup(data);
+    strncpy(novo_evento->info.data, data, sizeof(novo_evento->info.data) - 1);
+    novo_evento->info.data[sizeof(novo_evento->info.data) - 1] = '\0';
+
+    novo_evento->info.atividades = NULL;
 
     if(lista == NULL){
         novo_evento->prox = novo_evento;
@@ -44,8 +49,7 @@ void remove_aux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atua
     if(atual == *lista){
         *lista = anterior;
     }
-    free(atual->info.nome);
-    free(atual->info.data);
+    
     free(atual);
 }
 
@@ -91,8 +95,6 @@ void liberar_lista_circular(ListaEventos *lista) {
     }
 
     if (lista->prox == lista) {
-        free(lista->info.nome);
-        free(lista->info.data);
         free(lista);
         return;
     }
@@ -103,23 +105,19 @@ void liberar_lista_circular(ListaEventos *lista) {
     while (auxiliar != lista) {
         a_remover = auxiliar;
         auxiliar = auxiliar->prox;
-        free(a_remover->info.nome);
-        free(a_remover->info.data);
         free(a_remover);
     }
 
-    free(lista->info.nome);
-    free(lista->info.data);
     free(lista);
 }
 
-ListaEventos* buscar_evento(ListaEventos *lista, const char *nome) {
+ListaEventos* buscar_evento(ListaEventos *lista, char nome[50]) {
     if (lista == NULL){
         return NULL;
     }
     ListaEventos *atual = lista->prox;
     do{
-        if(strcmp(atual->info.nome, nome) == 0) {
+        if(strcasecmp(atual->info.nome, nome) == 0) {
             return atual;
         }
         atual = atual->prox;
