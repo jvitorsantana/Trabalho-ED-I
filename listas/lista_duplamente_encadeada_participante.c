@@ -183,11 +183,45 @@ int desfazerRemocaoParticipante(ListaParticipante** lista, PilhaParticipante* pi
     return inserirParticipante(lista, novoParticipante);
 }
 
+ListaParticipante *copiarLista(ListaParticipante *lista) {
+    if (lista == NULL) {
+        return NULL;
+    }
+
+    ListaParticipante *copia = NULL;
+    ListaParticipante *ultimo = NULL;
+
+    ListaParticipante *atual = lista;
+    while (atual != NULL) {
+        // Aloca novo nó
+        ListaParticipante* novoNo = malloc(sizeof(ListaParticipante));
+        if (novoNo == NULL) {
+            perror("Erro ao alocar na memoria");
+            exit(1);
+        }
+
+        // Copia os dados
+        novoNo->info = atual->info;
+        novoNo->proximo = NULL;
+        novoNo->anterior = ultimo;
+
+        if (ultimo == NULL) {
+            copia = novoNo;
+        } else {
+            ultimo->proximo = novoNo;
+        }
+        ultimo = novoNo;
+
+        atual = atual->proximo;
+    }
+
+    return copia;
+}
+
 ListaParticipante* ordernarListaParticipantesPeloNome(ListaParticipante* lista){
     if (lista == NULL || lista->proximo == NULL){
         return lista;
     }
-
     ListaParticipante* lento = lista;
     ListaParticipante* rapido = lista;
 
@@ -253,7 +287,8 @@ ListaParticipante* ordernarListaParticipantesPeloNome(ListaParticipante* lista){
 }
 
 void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
-    ListaParticipante *resultado = ordernarListaParticipantesPeloNome(lista);
+    ListaParticipante *copia = copiarLista(lista);
+    ListaParticipante *resultado = ordernarListaParticipantesPeloNome(copia);
     ListaParticipante *atual = resultado;
     printf("Lista dos Participantes Ordenada Pelo Nome\n");
     while (atual != NULL) {
@@ -261,6 +296,7 @@ void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
         atual = atual->proximo;
     }
     printf("\n");
+    liberarListaParticipantes(&copia);
 }
 
 
