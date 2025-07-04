@@ -3,6 +3,25 @@
 #include <string.h>
 
 #include "lista_encadeada_atividade.h"
+#include "lista_duplamente_encadeada_participante.h"
+
+int validarHorario(char *horario) {
+  if(strlen(horario) != 5 || horario[2] != ':') { // se o tamanho não for 5 ou o terceiro caractere não for ':'
+    return 0; 
+  }
+  if(isdigit(horario[0]) && isdigit(horario[1]) && isdigit(horario[3]) && isdigit(horario[4])) { // "HH:MM", verifica se os caracteres numeros
+    
+    int horas = (horario[0] - '0') * 10 + (horario[1] - '0'); 
+    int minutos = (horario[3] - '0') * 10 + (horario[4] - '0');
+    // Converte os caracteres para inteiros com ASCII, 
+    // onde '0' é subtraído para obter o valor numérico, pois '0' tem o valor ASCII 48, '1' tem 49, '2' tem 50...
+
+    if(horas >= 0 && horas < 24 && minutos >= 0 && minutos < 60) {
+      return 1; 
+    }
+  }
+  return 0; 
+}
 
 ListaAtividade *inicializar(){
   return NULL;
@@ -21,12 +40,15 @@ ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *hora
     }
 
     nova->info = (Atividade *) malloc(sizeof(Atividade));
+
     if (nova->info == NULL) {
       printf("Erro ao alocar memória para informações da atividade.\n");
       free(nova);
       return lista;
     }
 
+    nova->info->participantes = inicializarListaDuplamenteEncadeada(); // Inicializa a lista de participantes
+    
     strcpy(nova->info->titulo, titulo);
     strcpy(nova->info->horario, horario);
     nova->prox = lista;
@@ -51,12 +73,14 @@ ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo){
     return lista; 
   }
 
+  liberarListaParticipantes(&(atual->info->participantes)); // Libera a lista de participantes da atividade
   
   if(anterior == NULL){
     lista = atual->prox; 
   }else{
     anterior->prox = atual->prox;
   }
+  
 
   free(atual->info);
   free(atual);

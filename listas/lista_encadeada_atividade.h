@@ -8,7 +8,6 @@
 typedef struct ListaAtividade {
     Atividade *info;
     struct ListaAtividade *prox;
-    struct ListaParticipante *participantes;
 } ListaAtividade;
 
 ListaAtividade *inicializar();
