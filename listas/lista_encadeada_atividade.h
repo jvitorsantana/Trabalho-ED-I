@@ -1,12 +1,11 @@
-#ifndef LISTA_ENCADEADA_ATIVIDADES_H
-
-#define LISTA_ENCADEADA_ATIVIDADES_H
-
-#include "struct_atividade.h"
+#include "../estruturas/struct_atividade.h"
 #include "lista_duplamente_encadeada_participante.h"
 
+#ifndef LISTA_ENCADEADA_ATIVIDADES_H
+#define LISTA_ENCADEADA_ATIVIDADES_H
+
 typedef struct ListaAtividade {
-    Atividade *info;
+    struct Atividade info;
     struct ListaAtividade *prox;
     struct ListaParticipante *participantes;
 } ListaAtividade;

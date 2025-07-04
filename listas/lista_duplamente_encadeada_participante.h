@@ -1,20 +1,14 @@
-#include "../estruturas/struct_participante.h" 
 #include "pilha_participante.h"
-
-#include "estruturas/struct_participante.h"
+#include "../estruturas/struct_participante.h" 
 
 #ifndef LISTA_DUPLAMENTE_ENCADEADA_PARTICIPANTE_H
 #define LISTA_DUPLAMENTE_ENCADEADA_PARTICIPANTE_H
 
-#include "struct_participante.h"
 
 typedef struct ListaParticipante {
   Participante info;
   struct ListaParticipante *anterior;
   struct ListaParticipante *proximo;
-  // Participante info;
-  // struct ListaParticipante *ant;
-  // struct ListaParticipante *prox;
 } ListaParticipante;
 
 ListaParticipante *inicializarListaDuplamenteEncadeada();
