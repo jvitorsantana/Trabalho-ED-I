@@ -6,7 +6,7 @@ Deve-se implementar um sistema de organização de eventos acadêmicos, utilizan
 
 * [ ] Lista Encadeada Circular
 * [ ] Lista Encadeada Simples
-* [x] Lista Duplamente Encadeada
+* [ ] Lista Duplamente Encadeada
 * [ ] Fila
 * [ ] Pilha
 * [ ] Dois algoritmos de ordenação (um recursivo e outro iterativo)
@@ -16,7 +16,7 @@ Deve-se implementar um sistema de organização de eventos acadêmicos, utilizan
 A universidade realiza eventos, e cada evento possui várias atividades. Cada atividade possui participantes. O sistema deve:
 
 * [ ] Organizar os eventos e suas atividades
-* [x] Gerenciar participantes
+* [ ] Gerenciar participantes
 * [ ] Controlar fila de chegada para check-in
 * [ ] Permitir desfazer remoções com uma pilha
 * [ ] Ordenar atividades por horário e participantes por nome (um algoritmo deve ser recursivo e outro iterativo)
@@ -27,7 +27,7 @@ A universidade realiza eventos, e cada evento possui várias atividades. Cada at
   * Cada nó representa um evento (nome, data, ponteiro para lista de atividades)
 * [ ] Lista Encadeada Simples de Atividades
   * Cada nó representa uma atividade (título, horário, ponteiro para participantes)
-* [x] Lista Duplamente Encadeada de Participantes
+* [ ] Lista Duplamente Encadeada de Participantes
   * Cada nó representa um participante (nome, matrícula, e-mail)
 * [ ] Fila de Check-in por Evento (Ponteiro - Lista Encadeada)
   * Gerencia a ordem de chegada dos participantes no dia do evento
@@ -47,15 +47,15 @@ A universidade realiza eventos, e cada evento possui várias atividades. Cada at
 
 ### Atividades (por evento)
 
-* [x] Cadastrar
+* [] Cadastrar
 * [x] Listar
 * [x] Remover
 
 ### Participantes (por atividade)
 
-* [x] Cadastrar
-* [x] Listar
-* [x] Remover
+* [ ] Cadastrar
+* [ ] Listar
+* [ ] Remover
 
 ### Check-in (dos part. em uma fila)
 
