@@ -160,6 +160,6 @@ void realizarCheckIn(Evento *evento, char matriculaParticipante[]) {
     }
 
     inserirFila(evento->filaCheckIn, matriculaParticipante);
-    int posicao = existeNaFila(evento->filaCheckIn, matriculaParticipante);
+    int posicao = posicaoNaFila(evento->filaCheckIn, matriculaParticipante);
     printf("\nCheck-In realizado com sucesso!\nVoce esta na posicao: %d", posicao);
 }
