@@ -183,7 +183,7 @@ int desfazerRemocaoParticipante(ListaParticipante** lista, PilhaParticipante* pi
     return inserirParticipante(lista, novoParticipante);
 }
 
-ListaParticipante *copiarLista(ListaParticipante *lista) {
+ListaParticipante *copiarListaParticipante(ListaParticipante *lista) {
     if (lista == NULL) {
         return NULL;
     }
@@ -193,14 +193,12 @@ ListaParticipante *copiarLista(ListaParticipante *lista) {
 
     ListaParticipante *atual = lista;
     while (atual != NULL) {
-        // Aloca novo nó
         ListaParticipante* novoNo = malloc(sizeof(ListaParticipante));
         if (novoNo == NULL) {
             perror("Erro ao alocar na memoria");
             exit(1);
         }
 
-        // Copia os dados
         novoNo->info = atual->info;
         novoNo->proximo = NULL;
         novoNo->anterior = ultimo;
@@ -269,25 +267,11 @@ ListaParticipante* ordernarListaParticipantesPeloNome(ListaParticipante* lista){
         atual = atual->proximo;
     }
     
-    /*
-        ----------------------------------------------------------------------------------------
-        Não printar pq ele vai mostrar mais de uma vez no terminal (lado esquerdo e dps os dois)
-        ----------------------------------------------------------------------------------------
-    */
-
-    // atual = resultado;
-    // printf("\n Lista de Participantes Ordenada por Nome: \n");
-    // while (atual != NULL){
-    //     printf("Nome: %s | Matrícula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
-    //     atual = atual->proximo;
-    // }
-    
-    // antes que me perguntem, tem que retornar se não a cabeça ainda vai apontar pro antiga cabeça 
     return resultado;
 }
 
 void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
-    ListaParticipante *copia = copiarLista(lista);
+    ListaParticipante *copia = copiarListaParticipante(lista);
     ListaParticipante *resultado = ordernarListaParticipantesPeloNome(copia);
     ListaParticipante *atual = resultado;
     printf("\n=== Lista Participantes [A-Z] ===\n\n");
