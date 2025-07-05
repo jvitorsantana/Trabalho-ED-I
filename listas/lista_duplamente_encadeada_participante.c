@@ -1,6 +1,6 @@
+#include "../estruturas/struct_participante.h"
 #include "lista_duplamente_encadeada_participante.h"
 #include "pilha_participante.h"
-#include "../estruturas/struct_participante.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -290,7 +290,7 @@ void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
     ListaParticipante *copia = copiarLista(lista);
     ListaParticipante *resultado = ordernarListaParticipantesPeloNome(copia);
     ListaParticipante *atual = resultado;
-    printf("Lista dos Participantes Ordenada Pelo Nome\n");
+    printf("\n=== Lista Participantes [A-Z] ===\n\n");
     while (atual != NULL) {
         printf("Nome: %s | Matricula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
         atual = atual->proximo;

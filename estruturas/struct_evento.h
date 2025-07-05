@@ -4,8 +4,8 @@
 #define STRUCT_EVENTO_H
 
 typedef struct Evento {
-  char nome[50];
-  char data[10];
+  char nome[51];
+  char data[11];
   struct ListaAtividade *atividades;
 }Evento;
 

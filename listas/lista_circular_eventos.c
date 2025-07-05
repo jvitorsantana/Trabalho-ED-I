@@ -56,11 +56,13 @@ void remove_aux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atua
 
 ListaEventos* remover_evento(ListaEventos *lista, const char *nome){
     if(!lista){
+        printf("ERRO: Nao foi cadastrado nenhum evento!");
         return NULL;
     }
 
-    if(strcmp(lista->info.nome, nome)==0 && lista->prox == lista){
+    if(strcasecmp(lista->info.nome, nome) == 0 && lista->prox == lista){
         free(lista);
+        printf("Evento removido com sucesso!");
         return NULL;
     }
     ListaEventos *atual = lista->prox;
@@ -73,7 +75,7 @@ ListaEventos* remover_evento(ListaEventos *lista, const char *nome){
         anterior = atual;
         atual = atual->prox;
     }while(atual != lista->prox);
-
+    printf("Evento removido com sucesso!");
     return lista;
 }
 

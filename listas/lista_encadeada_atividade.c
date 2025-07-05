@@ -22,7 +22,8 @@ ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *hora
 
     strcpy(nova->info.titulo, titulo);
     strcpy(nova->info.horario, horario);
-    // nova->info.participantes = NULL;
+    nova->info.participantes = NULL;
+    nova->info.pilhaParticipantes = inicializarPilhaParticipantes();
     nova->prox = lista;
     return nova;
 }
