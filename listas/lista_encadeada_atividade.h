@@ -1,5 +1,6 @@
 #include "../estruturas/struct_atividade.h"
 #include "lista_duplamente_encadeada_participante.h"
+#include "pilha_atividade.h"
 
 #ifndef LISTA_ENCADEADA_ATIVIDADES_H
 #define LISTA_ENCADEADA_ATIVIDADES_H
@@ -18,5 +19,6 @@ ListaAtividade *copiarListaAtividade(ListaAtividade *lista);
 ListaAtividade *ordenarListaAtividadesPorHorario(ListaAtividade *lista);
 void exibirAtividades(ListaAtividade *lista);
 int validarHorario(char *horario);
+int desfazerRemocaoAtividade(ListaAtividade **lista, PilhaAtividade *pilha);
 
 #endif
