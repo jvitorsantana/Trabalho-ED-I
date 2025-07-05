@@ -183,3 +183,19 @@ void exibirAtividades(ListaAtividade *lista){
   }
   free(copia);
 }
+
+void exibirNomeAtividades(ListaAtividade *lista) {
+  ListaAtividade *copia = copiarListaAtividade(lista);
+  ListaAtividade *resultado = ordenarListaAtividadesPorHorario(copia);
+  ListaAtividade *atual = resultado;
+  if(atual == NULL){
+    printf("Nenhuma atividade cadastrada.\n");
+    return;
+  }
+
+  while (atual != NULL){
+    printf("- %s | Horario: %s\n", atual->info.titulo, atual->info.horario);
+    atual = atual->prox;
+  }
+  free(copia);
+}

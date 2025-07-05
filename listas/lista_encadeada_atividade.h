@@ -17,6 +17,7 @@ ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo);
 ListaAtividade *copiarListaAtividade(ListaAtividade *lista);
 ListaAtividade *ordenarListaAtividadesPorHorario(ListaAtividade *lista);
 void exibirAtividades(ListaAtividade *lista);
+void exibirNomeAtividades(ListaAtividade *lista);
 int validarHorario(char *horario);
 
 #endif
