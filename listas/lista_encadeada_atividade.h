@@ -7,8 +7,6 @@
 typedef struct ListaAtividade {
     struct Atividade info;
     struct ListaAtividade *prox;
-    struct ListaParticipante *participantes;
-    struct PilhaParticipante *pilhaParticipantes;
 } ListaAtividade;
 
 ListaAtividade *inicializar();
@@ -19,5 +17,6 @@ ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo);
 ListaAtividade *copiarListaAtividade(ListaAtividade *lista);
 ListaAtividade *ordenarListaAtividadesPorHorario(ListaAtividade *lista);
 void exibirAtividades(ListaAtividade *lista);
+int validarHorario(char *horario);
 
 #endif

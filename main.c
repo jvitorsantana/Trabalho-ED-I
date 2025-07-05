@@ -127,8 +127,12 @@ void menuEditarEvento(Evento *e) {
       case '1':
         char *nome_atividade = digitarNomeAtividade();
         char *horario_atividade = digitarHorarioAtividade();
-
-        e->atividades = inserirAtividade(e->atividades, nome_atividade, horario_atividade);
+        if (!validarHorario(horario_atividade)) {
+          printf("ERRO: Voce digitou o horario no formato invalido!\nUse: HH:mm");
+          pausarTerminal();
+        } else {
+          e->atividades = inserirAtividade(e->atividades, nome_atividade, horario_atividade);
+        }
         free(nome_atividade);
         free(horario_atividade);
         break;

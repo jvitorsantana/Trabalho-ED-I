@@ -154,8 +154,6 @@ ListaAtividade* copiarListaAtividade(ListaAtividade* lista) {
 
         novo->info = lista->info;
         novo->prox = NULL;
-        novo->participantes = NULL;
-        novo->pilhaParticipantes = NULL;
 
         if (copia == NULL) {
             copia = novo;
