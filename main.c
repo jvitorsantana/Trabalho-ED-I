@@ -281,4 +281,3 @@ void menuCheckIn(ListaEventos *listaEventos) {
   free(matriculaParticipante);
   pausarTerminal();
 }
-
