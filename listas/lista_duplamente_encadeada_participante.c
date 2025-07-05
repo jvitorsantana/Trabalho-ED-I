@@ -72,6 +72,20 @@ ListaParticipante* criarParticipante(char matricula[], char nome[], char email[]
   return novoParticipante; 
 }
 
+int buscarParticipante(ListaParticipante *lista, char matriculaParticipante[]) {
+    int existe = 0;
+    ListaParticipante *atual = lista;
+    while (atual != NULL) {
+        if (strcasecmp(atual->info.matricula, matriculaParticipante) == 0){
+            existe = 1;
+            return existe;
+        }
+        atual = atual->proximo;
+    }
+
+    return existe;
+}
+
 int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoParticipante){
   if (*lista == NULL){
     *lista = novoParticipante;
@@ -282,9 +296,3 @@ void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
     printf("\n");
     liberarListaParticipantes(&copia);
 }
-
-
-
-
-
-

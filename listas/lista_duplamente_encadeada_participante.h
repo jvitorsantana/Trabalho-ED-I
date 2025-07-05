@@ -13,6 +13,7 @@ typedef struct ListaParticipante {
 
 ListaParticipante *inicializarListaDuplamenteEncadeada();
 ListaParticipante *criarParticipante(char matricula[], char nome[], char email[]);
+int buscarParticipante(ListaParticipante *lista, char matriculaParticipante[]);
 int inserirParticipante(ListaParticipante **lista, ListaParticipante *novoParticipante);
 void liberarListaParticipantes(ListaParticipante **lista);
 int removerParticipante(ListaParticipante **lista, char matricula[], PilhaParticipante *pilha);

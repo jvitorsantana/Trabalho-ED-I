@@ -2,15 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lista_circular_eventos.h"
 #include "../estruturas/struct_evento.h"
+#include "fila_check_in.h"
+#include "lista_circular_eventos.h"
+#include "lista_duplamente_encadeada_participante.h"
 
 ListaEventos* inicializarListaEventos(){
     return NULL;
 }
 
-ListaEventos* inserir_evento(ListaEventos *lista, char nome[], char data[]){
-    ListaEventos *busca = buscar_evento(lista, nome);
+ListaEventos* inserirEvento(ListaEventos *lista, char nome[], char data[]){
+    ListaEventos *busca = buscarEvento(lista, nome);
     if(busca != NULL){
         printf("Evento com nome '%s' já existe.\n", nome);
         return lista;
@@ -28,6 +30,7 @@ ListaEventos* inserir_evento(ListaEventos *lista, char nome[], char data[]){
     novo_evento->info.data[sizeof(novo_evento->info.data) - 1] = '\0';
 
     novo_evento->info.atividades = NULL;
+    novo_evento->info.filaCheckIn = criarFila();
 
     if(lista == NULL){
         novo_evento->prox = novo_evento;
@@ -44,7 +47,7 @@ ListaEventos* inserir_evento(ListaEventos *lista, char nome[], char data[]){
     return novo_evento;
 }
 
-void remove_aux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual){
+void removerAux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual){
     anterior->prox = atual->prox;
     if(atual == *lista){
         *lista = anterior;
@@ -54,7 +57,7 @@ void remove_aux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atua
 }
 
 
-ListaEventos* remover_evento(ListaEventos *lista, const char *nome){
+ListaEventos* removerEvento(ListaEventos *lista, const char *nome){
     if(!lista){
         printf("ERRO: Nao foi cadastrado nenhum evento!");
         return NULL;
@@ -69,7 +72,7 @@ ListaEventos* remover_evento(ListaEventos *lista, const char *nome){
     ListaEventos *anterior = lista;
     do{
         if(strcmp(atual->info.nome, nome)==0){
-            remove_aux(&lista, anterior, atual);
+            removerAux(&lista, anterior, atual);
             return lista;
         }
         anterior = atual;
@@ -80,7 +83,7 @@ ListaEventos* remover_evento(ListaEventos *lista, const char *nome){
 }
 
 
-void imprimir_lista_circular(ListaEventos *lista){
+void imprimirEventos(ListaEventos *lista){
     if(lista == NULL){
         return;
     }
@@ -91,7 +94,7 @@ void imprimir_lista_circular(ListaEventos *lista){
     }while(atual != lista->prox);
 }
 
-void liberar_lista_circular(ListaEventos *lista) {
+void liberarListaCircularEventos(ListaEventos *lista) {
     if (lista == NULL) {
         return;
     }
@@ -113,7 +116,7 @@ void liberar_lista_circular(ListaEventos *lista) {
     free(lista);
 }
 
-ListaEventos* buscar_evento(ListaEventos *lista, char nome[50]) {
+ListaEventos* buscarEvento(ListaEventos *lista, char nome[]) {
     if (lista == NULL){
         return NULL;
     }
@@ -126,4 +129,37 @@ ListaEventos* buscar_evento(ListaEventos *lista, char nome[50]) {
     }while(atual != lista->prox);
 
   return NULL;
+}
+
+int participanteCadastradoNoEvento(Evento *evento, char matriculaParticipante[]) {
+    int existe = 0;
+    ListaAtividade *atividades = evento->atividades;
+    while (atividades != NULL) {
+        int participanteExiste = buscarParticipante(atividades->info.participantes, matriculaParticipante);
+        if (participanteExiste) {
+            existe = 1;
+            return existe;
+        }
+        atividades = atividades->prox;
+    }
+    return existe;
+}
+
+void realizarCheckIn(Evento *evento, char matriculaParticipante[]) {
+    int existe = existeNaFila(evento->filaCheckIn, matriculaParticipante);
+    if (existe) {
+        printf("\nERRO: Voce ja realizou o check-in neste evento!\n");
+        return;
+    }
+
+    int participanteCadastrado = participanteCadastradoNoEvento(evento, matriculaParticipante);
+    
+    if (!participanteCadastrado) {
+        printf("\nERRO: Este participante nao esta cadastrado em nenhuma das atividades deste evento!");
+        return;
+    }
+
+    inserirFila(evento->filaCheckIn, matriculaParticipante);
+    int posicao = existeNaFila(evento->filaCheckIn, matriculaParticipante);
+    printf("\nCheck-In realizado com sucesso!\nVoce esta na posicao: %d", posicao);
 }
