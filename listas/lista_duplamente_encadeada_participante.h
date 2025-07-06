@@ -11,9 +11,9 @@ typedef struct ListaParticipante {
   struct ListaParticipante *proximo;
 } ListaParticipante;
 
-ListaParticipante *inicializarListaDuplamenteEncadeada();
+ListaParticipante *inicializarListaParticipantes();
 ListaParticipante *criarParticipante(char matricula[], char nome[], char email[]);
-int buscarParticipante(ListaParticipante *lista, char matriculaParticipante[]);
+int existeParticipante(ListaParticipante *lista, char matriculaParticipante[]);
 int inserirParticipante(ListaParticipante **lista, ListaParticipante *novoParticipante);
 void liberarListaParticipantes(ListaParticipante **lista);
 int removerParticipante(ListaParticipante **lista, char matricula[], PilhaParticipante *pilha);

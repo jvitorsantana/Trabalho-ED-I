@@ -116,6 +116,8 @@ void menuAdministracao(ListaEventos **listaEventos) {
           printf("Data: %s\n\n", eventos->info.data);
           printf("Atividades:\n");
           exibirNomeAtividades(eventos->info.atividades);
+          printf("\nParticipantes:\n");
+          imprimirParticipantesEvento(eventos->info);
           printf("\n\nFila de Check-In:\n");
           imprimirFila(eventos->info.filaCheckIn);
           pausarTerminal();

@@ -14,6 +14,7 @@ ListaEventos* inserirEvento(ListaEventos *lista, char nome[], char data[]);
 void removerAux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual);
 ListaEventos* removerEvento(ListaEventos *lista, const char *nome);
 void imprimirEventos(ListaEventos *lista);
+void imprimirParticipantesEvento(Evento evento);
 void liberarListaCircularEventos(ListaEventos *lista);
 ListaEventos* buscarEvento(ListaEventos *lista, char nome[]);
 int participanteCadastradoNoEvento(Evento *evento, char matriculaParticipante[]);
