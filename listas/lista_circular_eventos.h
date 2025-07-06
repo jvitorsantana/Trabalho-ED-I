@@ -10,12 +10,14 @@ typedef struct ListaEventos {
 
 ListaEventos* inicializarListaEventos();
 
-ListaEventos* inserir_evento(ListaEventos *lista, char nome[], char data[]);
-void remove_aux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual);
-ListaEventos* remover_evento(ListaEventos *lista, const char *nome);
-void imprimir_lista_circular(ListaEventos *lista);
-void liberar_lista_circular(ListaEventos *lista);
-ListaEventos* buscar_evento(ListaEventos *lista, char nome[]);
-
+ListaEventos* inserirEvento(ListaEventos *lista, char nome[], char data[]);
+void removerAux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual);
+ListaEventos* removerEvento(ListaEventos *lista, const char *nome);
+void imprimirEventos(ListaEventos *lista);
+void imprimirParticipantesEvento(Evento evento);
+void liberarListaCircularEventos(ListaEventos *lista);
+ListaEventos* buscarEvento(ListaEventos *lista, char nome[]);
+int participanteCadastradoNoEvento(Evento *evento, char matriculaParticipante[]);
+void realizarCheckIn(Evento *evento, char matriculaParticipante[]);
 
 #endif

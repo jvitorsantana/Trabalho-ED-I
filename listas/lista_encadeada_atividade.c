@@ -3,8 +3,71 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "pilha_atividade.h"
 #include "lista_encadeada_atividade.h"
 #include "lista_duplamente_encadeada_participante.h"
+
+
+PilhaAtividade *inicializarPilhaAtividades() {
+  PilhaAtividade *pilha = (PilhaAtividade *) malloc(sizeof(PilhaAtividade));
+  if (pilha == NULL) {
+    printf("Erro ao alocar memória para a pilha de atividades.\n");
+    exit(1);
+  }
+  pilha->topo = NULL;
+  return pilha;
+}
+
+int empilharAtividade(PilhaAtividade *pilha, Atividade atividade){
+  NoPilhaAtividade *novoNo = (NoPilhaAtividade *) malloc(sizeof(NoPilhaAtividade));
+  if (novoNo == NULL) {
+    return 0;
+  }
+  novoNo->info = atividade;
+  novoNo->proximo = pilha->topo;
+  pilha->topo = novoNo;
+  return 1;
+}
+
+int desempilharAtividade(PilhaAtividade *pilha, Atividade *destino) {
+  if (pilha->topo == NULL) {
+    return 0; // Pilha vazia
+  }
+
+  NoPilhaAtividade *temp = pilha->topo;
+  *destino = temp->info; 
+  pilha->topo = temp->proximo; 
+  free(temp);
+  return 1;
+}
+
+void liberarPilhaAtividades(PilhaAtividade *pilha) {
+  Atividade atv;
+  while (desempilharAtividade(pilha, &atv));
+}
+
+int desfazerRemocaoAtividade(ListaAtividade **lista, PilhaAtividade *pilha){
+  if(pilha->topo == NULL){
+    printf("Pilha vazia\n");
+    return 0;
+  }
+
+  Atividade atividadeRestaurada;
+  if(!desempilharAtividade(pilha, &atividadeRestaurada)){
+    return 0;
+  }
+
+  ListaAtividade *novaAtividade = (ListaAtividade *) malloc(sizeof(ListaAtividade));
+  
+  if(novaAtividade == NULL){
+    printf("Erro ao alocar memória para nova atividade\n");
+    return 0;
+  }
+  novaAtividade->info = atividadeRestaurada;
+  novaAtividade->prox = *lista;
+  *lista = novaAtividade;
+  return 1;
+}
 
 int validarHorario(char *horario) {
   if(strlen(horario) != 5 || horario[2] != ':') { // se o tamanho não for 5 ou o terceiro caractere não for ':'
@@ -50,31 +113,35 @@ ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *hora
 }
       
 
-ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo){
+ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo, PilhaAtividade *pilhaDesfazerAtividade) {
+  if (!pilhaDesfazerAtividade) {
+    printf("Pilha de desfazer não inicializada!\n");
+    return lista;
+  }
   ListaAtividade *atual = lista;
   ListaAtividade *anterior = NULL;
   
   while(atual != NULL){
-    if(strcasecmp(atual->info.titulo, titulo) == 0){
+    if(strcmp(atual->info.titulo, titulo) == 0){
       break;
     }
     anterior = atual;
     atual = atual->prox; 
   }
-
+  
   if(atual == NULL){
     printf("Atividade com título '%s' não encontrada.\n", titulo);
     return lista; 
   }
-
-  liberarListaParticipantes(&(atual->info.participantes)); // Libera a lista de participantes da atividade
+  
+  empilharAtividade(pilhaDesfazerAtividade, atual->info); // Empilha a atividade removida
   
   if(anterior == NULL){
     lista = atual->prox; 
   }else{
     anterior->prox = atual->prox;
   }
-
+  // Remove a atividade da lista mas não libera o nó Atividade, pois ela foi empilhada.
   free(atual);
   
   printf("Atividade '%s' removida com sucesso.\n", titulo);
@@ -85,6 +152,13 @@ ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo){
 void liberarAtividades(ListaAtividade *lista) {
   ListaAtividade *atual = lista;
   while (atual != NULL) {
+    if (atual->info.participantes != NULL) {
+      liberarListaParticipantes(&atual->info.participantes);
+    }
+    if (atual->info.pilhaParticipantes != NULL) {
+      liberarPilhaParticipante(atual->info.pilhaParticipantes);
+    }
+    
     ListaAtividade *prox = atual->prox;
     free(atual);
     atual = prox;
@@ -154,8 +228,6 @@ ListaAtividade* copiarListaAtividade(ListaAtividade* lista) {
 
         novo->info = lista->info;
         novo->prox = NULL;
-        novo->participantes = NULL;
-        novo->pilhaParticipantes = NULL;
 
         if (copia == NULL) {
             copia = novo;
@@ -181,6 +253,22 @@ void exibirAtividades(ListaAtividade *lista){
   printf("Atividades cadastradas: \n");
   while (atual != NULL){
     printf("Título: %s, Horário: %s\n", atual->info.titulo, atual->info.horario);
+    atual = atual->prox;
+  }
+  free(copia);
+}
+
+void exibirNomeAtividades(ListaAtividade *lista) {
+  ListaAtividade *copia = copiarListaAtividade(lista);
+  ListaAtividade *resultado = ordenarListaAtividadesPorHorario(copia);
+  ListaAtividade *atual = resultado;
+  if(atual == NULL){
+    printf("Nenhuma atividade cadastrada.\n");
+    return;
+  }
+
+  while (atual != NULL){
+    printf("- %s | Horario: %s\n", atual->info.titulo, atual->info.horario);
     atual = atual->prox;
   }
   free(copia);

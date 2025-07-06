@@ -6,13 +6,13 @@
 #include "estruturas/struct_evento.h"
 #include "listas/lista_circular_eventos.h"
 #include "listas/lista_encadeada_atividade.h"
-
+#include "listas/fila_check_in.h"
 
 void menuParticipantesAtividade(Atividade *atividade);
 void menuVerAtividade(Atividade *atividade);
 void menuEditarEvento(Evento *e);
 void menuAdministracao(ListaEventos **listaEventos);
-void menuCheckIn();
+void menuCheckIn(ListaEventos *listaEventos);
 void menuPrincipal(ListaEventos **listaEventos);
 
 int main() {
@@ -41,9 +41,10 @@ void menuPrincipal(ListaEventos **listaEventos) {
         menuAdministracao(listaEventos);
         break;
       case '2':
-        menuCheckIn();
+        menuCheckIn(*listaEventos);
         break;
       case '0':
+        liberarListaCircularEventos(*listaEventos);
         break;
       default:
         printf("Opcao invalida!");
@@ -62,6 +63,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
     printf("2 » Listar Eventos\n");
     printf("3 » Excluir Evento\n");
     printf("4 » Editar Evento\n");
+    printf("5 » Ver Evento\n");
     printf("0 » Voltar\n");
     printf("➜ ");
 
@@ -69,36 +71,57 @@ void menuAdministracao(ListaEventos **listaEventos) {
     limparBuffer();
 
     switch(opcaoAdmin) {
+      char *nomeEvento;
+      ListaEventos *eventos;
       case '1':
-        char *nome_inserir = digitarNomeEvento();
-        char *data_inserir = digitarDataEvento();
-        *listaEventos = inserir_evento(*listaEventos, nome_inserir, data_inserir);
-        free(nome_inserir);
-        free(data_inserir);
+        nomeEvento = digitarNomeEvento();
+        char *dataEvento = digitarDataEvento();
+        *listaEventos = inserirEvento(*listaEventos, nomeEvento, dataEvento);
+        free(nomeEvento);
+        free(dataEvento);
         pausarTerminal();
         break;
       case '2':
         if (*listaEventos == NULL) {
           printf("ERRO: Nao foi cadastrado nenhum evento!");
         } else {
-          imprimir_lista_circular(*listaEventos);
+          imprimirEventos(*listaEventos);
         }
         pausarTerminal();
         break;
       case '3':
-        char *nome_remover = digitarNomeEvento();
-        *listaEventos = remover_evento(*listaEventos, nome_remover);
-        free(nome_remover);
+        nomeEvento = digitarNomeEvento();
+        *listaEventos = removerEvento(*listaEventos, nomeEvento);
+        free(nomeEvento);
         pausarTerminal();
         break;
       case '4':
-        char *nome_evento = digitarNomeEvento();
-        ListaEventos *eventos = buscar_evento(*listaEventos, nome_evento);
+        nomeEvento = digitarNomeEvento();
+        eventos = buscarEvento(*listaEventos, nomeEvento);
         if (eventos == NULL) {
           printf("ERRO: Evento nao encontrado!");
           pausarTerminal();
         } else {
           menuEditarEvento(&eventos->info); // OU &((*eventos).info)
+        }
+        break;
+      case '5':
+        nomeEvento = digitarNomeEvento();
+        eventos = buscarEvento(*listaEventos, nomeEvento);
+        if (eventos == NULL) {
+          printf("ERRO: Evento nao encontrado!");
+          pausarTerminal();
+        } else {
+          limparTerminal();
+          printf("Informacoes do evento '%s'\n", eventos->info.nome);
+          printf("Data: %s\n\n", eventos->info.data);
+          printf("Atividades:\n");
+          exibirNomeAtividades(eventos->info.atividades);
+          printf("\nParticipantes:\n");
+          imprimirParticipantesEvento(eventos->info);
+          printf("\nFila de Check-In:\n");
+          imprimirFila(eventos->info.filaCheckIn);
+          pausarTerminal();
         }
         break;
       case '0':
@@ -127,8 +150,12 @@ void menuEditarEvento(Evento *e) {
       case '1':
         char *nome_atividade = digitarNomeAtividade();
         char *horario_atividade = digitarHorarioAtividade();
-
-        e->atividades = inserirAtividade(e->atividades, nome_atividade, horario_atividade);
+        if (!validarHorario(horario_atividade)) {
+          printf("ERRO: Voce digitou o horario no formato invalido!\nUse: HH:mm");
+          pausarTerminal();
+        } else {
+          e->atividades = inserirAtividade(e->atividades, nome_atividade, horario_atividade);
+        }
         free(nome_atividade);
         free(horario_atividade);
         break;
@@ -139,7 +166,7 @@ void menuEditarEvento(Evento *e) {
         break;
       case '3':
         char *nome_remover = digitarNomeAtividade();
-        e->atividades = removerAtividade(e->atividades, nome_remover);
+        e->atividades = removerAtividade(e->atividades, nome_remover, e->pilhaAtividades);
         free(nome_remover);
         pausarTerminal();
         break;
@@ -156,7 +183,13 @@ void menuEditarEvento(Evento *e) {
         break;
       case 'Z':
       case 'z':
-        printf("Desfazer a pilha aq");
+        int resultado = desfazerRemocaoAtividade(&e->atividades, e->pilhaAtividades);
+        if (resultado) {
+          printf("Ultima remocao de atividade foi desfeita!\n");
+        } else {
+          printf("ERRO: Nao foi possivel desfazer a ultima remocao da atividade!");
+        }
+        pausarTerminal();
         break;
       case '0':
         break;
@@ -258,27 +291,22 @@ void menuParticipantesAtividade(Atividade *atividade) {
   }
 }
 
-void menuCheckIn() {
+void menuCheckIn(ListaEventos *listaEventos) {
   limparTerminal();
 
-  char matricula[50];
-  char nomeEvento[100];
-
-  printf("Digite o nome do evento: ");
-  scanf("%100[^\n]", nomeEvento);
-  limparBuffer();
-  printf("Digite a sua matricula: ");
-  scanf("%s", matricula);
-  limparBuffer();
-
-  int resultado = 1;
-
-  if (resultado) {
-    printf("Check-In realizado com sucesso!");
-  } else {
-    printf("Nao foi possivel realizar o check-in");
+  char *nomeEvento = digitarNomeEvento();
+  ListaEventos *eventos = buscarEvento(listaEventos, nomeEvento);
+  if (eventos == NULL) {
+    printf("\nERRO: Nao foi encontrado um evento com este nome!\n");
+    free(nomeEvento);
+    pausarTerminal();
+    return;
   }
+  char *matriculaParticipante = digitarMatriculaParticipante();
 
+  realizarCheckIn(&eventos->info, matriculaParticipante);
+
+  free(nomeEvento);
+  free(matriculaParticipante);
   pausarTerminal();
 }
-
