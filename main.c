@@ -118,7 +118,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
           exibirNomeAtividades(eventos->info.atividades);
           printf("\nParticipantes:\n");
           imprimirParticipantesEvento(eventos->info);
-          printf("\n\nFila de Check-In:\n");
+          printf("\nFila de Check-In:\n");
           imprimirFila(eventos->info.filaCheckIn);
           pausarTerminal();
         }
