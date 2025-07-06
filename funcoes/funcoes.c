@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "funcoes.h"
 
@@ -123,4 +125,22 @@ char *digitarMatriculaParticipante() {
   limparBuffer();
 
   return matricula;
+}
+
+int validarHorario(char *horario) {
+  if(strlen(horario) != 5 || horario[2] != ':') { // se o tamanho não for 5 ou o terceiro caractere não for ':'
+    return 0; 
+  }
+  if(isdigit(horario[0]) && isdigit(horario[1]) && isdigit(horario[3]) && isdigit(horario[4])) { // "HH:MM", verifica se os caracteres numeros
+    
+    int horas = (horario[0] - '0') * 10 + (horario[1] - '0'); 
+    int minutos = (horario[3] - '0') * 10 + (horario[4] - '0');
+    // Converte os caracteres para inteiros com ASCII, 
+    // onde '0' é subtraído para obter o valor numérico, pois '0' tem o valor ASCII 48, '1' tem 49, '2' tem 50...
+
+    if(horas >= 0 && horas < 24 && minutos >= 0 && minutos < 60) {
+      return 1; 
+    }
+  }
+  return 0; 
 }

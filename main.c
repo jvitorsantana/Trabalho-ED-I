@@ -45,6 +45,7 @@ void menuPrincipal(ListaEventos **listaEventos) {
         break;
       case '0':
         liberarListaCircularEventos(*listaEventos);
+        printf("Saindo...\n");
         break;
       default:
         printf("Opcao invalida!");
@@ -126,6 +127,9 @@ void menuAdministracao(ListaEventos **listaEventos) {
         break;
       case '0':
         break;
+      default:
+        printf("Opcao invalida!");
+        pausarTerminal();
       }
   }
 }
