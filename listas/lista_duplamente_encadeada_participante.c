@@ -93,10 +93,14 @@ int existeParticipante(ListaParticipante *lista, char matriculaParticipante[]) {
 int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoParticipante){
   if (*lista == NULL){
     *lista = novoParticipante;
+    printf("Participante inserido com sucesso!\n");
+
     // printf("Participante inserido:\n");
     // printf("Matrícula: %s\n", novoParticipante->info.matricula);
     // printf("Nome: %s\n", novoParticipante->info.nome);
     // printf("Email: %s\n\n", novoParticipante->info.email);
+
+
     return 1;
   }
 
@@ -122,6 +126,8 @@ int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoPartic
 //   printf("Nome: %s\n", novoParticipante->info.nome);
 //   printf("Email: %s\n\n", novoParticipante->info.email);
 
+  printf("Participante inserido com sucesso!\n");
+
   return 1;
 }
 
@@ -137,7 +143,7 @@ void liberarListaParticipantes(ListaParticipante** lista){
 
 int removerParticipante(ListaParticipante** lista, char matricula[], PilhaParticipante* pilha){
     if (*lista == NULL){
-        printf("Lista vazia\n");
+        printf("Não há participantes para serem removidos!\n");
         return 0;
     }
 
@@ -148,6 +154,7 @@ int removerParticipante(ListaParticipante** lista, char matricula[], PilhaPartic
     }
 
     if (atual == NULL){
+        printf("Participante não encontrado!\n");
         return 0;
     }
 
@@ -167,28 +174,33 @@ int removerParticipante(ListaParticipante** lista, char matricula[], PilhaPartic
     strcpy(temp.email, atual->info.email);
 
     if (!empilharParticipante(pilha, temp)){
+        printf("Não foi possível remover o participante! (pilha não suporta)\n");
         return 0;
     }
     
     free(atual);
+
+    printf("Participante removido com sucesso!\n");
 
     return 1;
 }
 
 int desfazerRemocaoParticipante(ListaParticipante** lista, PilhaParticipante* pilha){
     if (pilha->topo == NULL){
-        printf("Pilha vazia\n");
+        printf("Não há nada para desfazer!\n");
         return 0;
     }
 
     Participante p;
 
     if (!desempilharParticipante(pilha, &p)){
+        printf("Não foi possível desfazer a remoção do participante!\n");
         return 0;
     }
 
     ListaParticipante* novoParticipante = (ListaParticipante*)malloc(sizeof(ListaParticipante));
     if (novoParticipante == NULL){
+        printf("Não foi possível desfazer a remoção do participante!\n");
         return 0;
     }
 
@@ -198,6 +210,7 @@ int desfazerRemocaoParticipante(ListaParticipante** lista, PilhaParticipante* pi
     novoParticipante->anterior = NULL;
     novoParticipante->proximo = NULL;
 
+    printf("Remoção desfeita!\n");
     return inserirParticipante(lista, novoParticipante);
 }
 

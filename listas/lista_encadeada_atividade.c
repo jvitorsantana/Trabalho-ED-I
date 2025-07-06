@@ -101,6 +101,7 @@ ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *hora
     nova->info.participantes = NULL;
     nova->info.pilhaParticipantes = inicializarPilhaParticipantes();
     nova->prox = lista;
+    printf("Atividade inserida com sucesso!\n");
     return nova;
 }
       
