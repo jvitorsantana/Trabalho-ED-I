@@ -9,6 +9,7 @@ typedef struct Evento {
   char data[11];
   ListaAtividade *atividades;
   FilaCheckIn *filaCheckIn;
+  PilhaAtividade *pilhaAtividades;
 }Evento;
 
 #endif

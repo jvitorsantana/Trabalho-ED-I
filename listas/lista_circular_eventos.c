@@ -6,6 +6,7 @@
 #include "fila_check_in.h"
 #include "lista_circular_eventos.h"
 #include "lista_duplamente_encadeada_participante.h"
+#include "pilha_atividade.h"
 
 ListaEventos* inicializarListaEventos(){
     return NULL;
@@ -31,7 +32,7 @@ ListaEventos* inserirEvento(ListaEventos *lista, char nome[], char data[]){
 
     novo_evento->info.atividades = NULL;
     novo_evento->info.filaCheckIn = criarFila();
-
+    novo_evento->info.pilhaAtividades = inicializarPilhaAtividades();
     if(lista == NULL){
         novo_evento->prox = novo_evento;
         printf("Evento foi inserido: \n");

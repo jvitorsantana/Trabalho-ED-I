@@ -143,7 +143,7 @@ void menuEditarEvento(Evento *e) {
         break;
       case '3':
         char *nome_remover = digitarNomeAtividade();
-        e->atividades = removerAtividade(e->atividades, nome_remover);
+        e->atividades = removerAtividade(e->atividades, nome_remover, e->pilhaAtividades);
         free(nome_remover);
         pausarTerminal();
         break;
@@ -160,7 +160,8 @@ void menuEditarEvento(Evento *e) {
         break;
       case 'Z':
       case 'z':
-        printf("Desfazer a pilha aq");
+        desfazerRemocaoAtividade(&e->atividades, e->pilhaAtividades);
+        pausarTerminal();
         break;
       case '0':
         break;

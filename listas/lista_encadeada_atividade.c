@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "pilha_atividade.h"
 #include "lista_encadeada_atividade.h"
 #include "lista_duplamente_encadeada_participante.h"
 
@@ -50,31 +51,35 @@ ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *hora
 }
       
 
-ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo){
+ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo, PilhaAtividade *pilhaDesfazerAtividade) {
+  if (!pilhaDesfazerAtividade) {
+    printf("Pilha de desfazer não inicializada!\n");
+    return lista;
+  }
   ListaAtividade *atual = lista;
   ListaAtividade *anterior = NULL;
   
   while(atual != NULL){
-    if(strcasecmp(atual->info.titulo, titulo) == 0){
+    if(strcmp(atual->info.titulo, titulo) == 0){
       break;
     }
     anterior = atual;
     atual = atual->prox; 
   }
-
+  
   if(atual == NULL){
     printf("Atividade com título '%s' não encontrada.\n", titulo);
     return lista; 
   }
-
-  liberarListaParticipantes(&(atual->info.participantes)); // Libera a lista de participantes da atividade
+  
+  empilharAtividade(pilhaDesfazerAtividade, atual->info); // Empilha a atividade removida
   
   if(anterior == NULL){
     lista = atual->prox; 
   }else{
     anterior->prox = atual->prox;
   }
-
+  // Remove a atividade da lista mas não libera o nó Atividade, pois ela foi empilhada.
   free(atual);
   
   printf("Atividade '%s' removida com sucesso.\n", titulo);
@@ -182,4 +187,63 @@ void exibirAtividades(ListaAtividade *lista){
     atual = atual->prox;
   }
   free(copia);
+}
+
+PilhaAtividade *inicializarPilhaAtividades() {
+  PilhaAtividade *pilha = (PilhaAtividade *) malloc(sizeof(PilhaAtividade));
+  if (pilha == NULL) {
+    printf("Erro ao alocar memória para a pilha de atividades.\n");
+    exit(1);
+  }
+  pilha->topo = NULL;
+  return pilha;
+}
+
+int empilharAtividade(PilhaAtividade *pilha, Atividade atividade){
+  ListaAtividade *novoNo = (ListaAtividade *)malloc(sizeof(ListaAtividade));
+  if (novoNo == NULL) {
+    return 0;
+  }
+  novoNo->info = atividade;
+  novoNo->prox = pilha->topo;
+  pilha->topo = novoNo;
+  return 1;
+}
+
+int desempilharAtividade(PilhaAtividade *pilha, Atividade *destino) {
+  if (pilha->topo == NULL) {
+    return 0; // Pilha vazia
+  }
+
+  ListaAtividade *temp = pilha->topo;
+  
+  *destino = temp->info; 
+  pilha->topo = temp->prox; 
+  free(temp);
+  return 1;
+
+}
+
+
+int desfazerRemocaoAtividade(ListaAtividade **lista, PilhaAtividade *pilha){
+  if(pilha->topo == NULL){
+    printf("Pilha vazia\n");
+    return 0;
+  }
+
+  Atividade atividadeRestaurada;
+  if(!desempilharAtividade(pilha, &atividadeRestaurada)){
+    return 0;
+  }
+
+  ListaAtividade *novaAtividade = (ListaAtividade *) malloc(sizeof(ListaAtividade));
+  
+  if(novaAtividade == NULL){
+    printf("Erro ao alocar memória para nova atividade\n");
+    return 0;
+  }
+  novaAtividade->info = atividadeRestaurada;
+  novaAtividade->prox = *lista;
+  *lista = novaAtividade;
+  return 1;
 }
