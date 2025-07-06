@@ -11,5 +11,7 @@ char *digitarHorarioAtividade();
 char *digitarNomeParticipante();
 char *digitarEmailParticipante();
 char *digitarMatriculaParticipante();
+int validarHorario(char *horario);
+int validarData(char *data);
 
 #endif
