@@ -49,7 +49,6 @@ void remove_aux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atua
     if(atual == *lista){
         *lista = anterior;
     }
-    
     free(atual);
 }
 
@@ -113,7 +112,7 @@ void liberar_lista_circular(ListaEventos *lista) {
     free(lista);
 }
 
-ListaEventos* buscar_evento(ListaEventos *lista, char nome[50]) {
+ListaEventos* buscar_evento(ListaEventos *lista, char nome[]) {
     if (lista == NULL){
         return NULL;
     }
