@@ -18,7 +18,7 @@ A universidade realiza eventos, e cada evento possui várias atividades. Cada at
 * [x] Organizar os eventos e suas atividades
 * [x] Gerenciar participantes
 * [x] Controlar fila de chegada para check-in
-* [ ] Permitir desfazer remoções com uma pilha
+* [x] Permitir desfazer remoções com uma pilha
 * [x] Ordenar atividades por horário e participantes por nome (um algoritmo deve ser recursivo e outro iterativo)
 
 ## Estruturas necessárias
@@ -31,7 +31,7 @@ A universidade realiza eventos, e cada evento possui várias atividades. Cada at
   * Cada nó representa um participante (nome, matrícula, e-mail)
 * [x] Fila de Check-in por Evento (Ponteiro - Lista Encadeada)
   * Gerencia a ordem de chegada dos participantes no dia do evento
-* [ ] Pilha de Desfazer (Ponteiro - Lista Encadeada)
+* [x] Pilha de Desfazer (Ponteiro - Lista Encadeada)
   * Armazena operações de remoção (atividade ou participante) e permite restaurar a última
 * [x] Algoritmo de Ordenação (um deve ser recursivo e outro iterativo) aplicados em:
   * Atividades por horário
@@ -63,5 +63,5 @@ A universidade realiza eventos, e cada evento possui várias atividades. Cada at
 
 ### Outras
 
-* [ ] Desfazer a última remoção usando pilha
+* [x] Desfazer a última remoção usando pilha
 * [x] Ordenar e exibir atividades ou participantes conforme solicitado no menu
