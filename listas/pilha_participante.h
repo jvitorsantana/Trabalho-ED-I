@@ -17,6 +17,6 @@ typedef struct PilhaParticipante{
 PilhaParticipante *inicializarPilhaParticipantes();
 int empilharParticipante(PilhaParticipante *pilha, Participante Participante);
 int desempilharParticipante(PilhaParticipante *pilha, Participante *destino);
-void liberarPilha(PilhaParticipante *pilha);
+void liberarPilhaParticipante(PilhaParticipante *pilha);
 
 #endif

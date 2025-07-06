@@ -6,14 +6,13 @@
 #include "estruturas/struct_evento.h"
 #include "listas/lista_circular_eventos.h"
 #include "listas/lista_encadeada_atividade.h"
+#include "listas/fila_check_in.h"
 
-void limparTerminal();
-void pausarTerminal();
-void menuParticipantesAtividade();
-void menuVerAtividade();
+void menuParticipantesAtividade(Atividade *atividade);
+void menuVerAtividade(Atividade *atividade);
 void menuEditarEvento(Evento *e);
 void menuAdministracao(ListaEventos **listaEventos);
-void menuCheckIn();
+void menuCheckIn(ListaEventos *listaEventos);
 void menuPrincipal(ListaEventos **listaEventos);
 
 int main() {
@@ -25,7 +24,6 @@ int main() {
 void menuPrincipal(ListaEventos **listaEventos) {
   char opcao = '\0';
   while (opcao != '0') {
-    fflush(stdin);
     limparTerminal();
 
     printf("Seja bem-vindo ao Sistema PicaDuraMole Gerenciador de Eventos\n");
@@ -34,18 +32,19 @@ void menuPrincipal(ListaEventos **listaEventos) {
     printf("2 » Realizar Check-In\n");
     printf("0 » Sair\n");
     printf("➜ ");
-    
-    scanf("%c", &opcao);
+
+    scanf(" %c", &opcao);
+    limparBuffer();
 
     switch(opcao) {
       case '1':
         menuAdministracao(listaEventos);
-        getchar();
         break;
       case '2':
-        menuCheckIn();
+        menuCheckIn(*listaEventos);
         break;
       case '0':
+        liberarListaCircularEventos(*listaEventos);
         break;
       default:
         printf("Opcao invalida!");
@@ -58,52 +57,71 @@ void menuPrincipal(ListaEventos **listaEventos) {
 void menuAdministracao(ListaEventos **listaEventos) {
   char opcaoAdmin = '\0';
   while (opcaoAdmin != '0') {
-    fflush(stdin);
-    getchar();
     limparTerminal();
     printf("Seja bem-vindo ao painel administrativo!\n\n");
     printf("1 » Criar Evento\n");
     printf("2 » Listar Eventos\n");
     printf("3 » Excluir Evento\n");
     printf("4 » Editar Evento\n");
+    printf("5 » Ver Evento\n");
     printf("0 » Voltar\n");
     printf("➜ ");
 
     scanf(" %c", &opcaoAdmin);
+    limparBuffer();
 
     switch(opcaoAdmin) {
+      char *nomeEvento;
+      ListaEventos *eventos;
       case '1':
-        getchar();
-        fflush(stdin);
-        char *nome_inserir = digitarNomeEvento();
-        fflush(stdin);
-        getchar();
-        char *data_inserir = digitarDataEvento();
-        *listaEventos = inserir_evento(*listaEventos, nome_inserir, data_inserir);
-        free(nome_inserir);
-        free(data_inserir);
+        nomeEvento = digitarNomeEvento();
+        char *dataEvento = digitarDataEvento();
+        *listaEventos = inserirEvento(*listaEventos, nomeEvento, dataEvento);
+        free(nomeEvento);
+        free(dataEvento);
         pausarTerminal();
         break;
       case '2':
-        imprimir_lista_circular(*listaEventos);
+        if (*listaEventos == NULL) {
+          printf("ERRO: Nao foi cadastrado nenhum evento!");
+        } else {
+          imprimirEventos(*listaEventos);
+        }
         pausarTerminal();
         break;
       case '3':
-        getchar();
-        char *nome_remover = digitarNomeEvento();
-        *listaEventos = remover_evento(*listaEventos, nome_remover);
-        free(nome_remover);
+        nomeEvento = digitarNomeEvento();
+        *listaEventos = removerEvento(*listaEventos, nomeEvento);
+        free(nomeEvento);
         pausarTerminal();
         break;
       case '4':
-        getchar();
-        char *nome_evento = digitarNomeEvento();
-        ListaEventos *eventos = buscar_evento(*listaEventos, nome_evento);
+        nomeEvento = digitarNomeEvento();
+        eventos = buscarEvento(*listaEventos, nomeEvento);
         if (eventos == NULL) {
           printf("ERRO: Evento nao encontrado!");
           pausarTerminal();
         } else {
           menuEditarEvento(&eventos->info); // OU &((*eventos).info)
+        }
+        break;
+      case '5':
+        nomeEvento = digitarNomeEvento();
+        eventos = buscarEvento(*listaEventos, nomeEvento);
+        if (eventos == NULL) {
+          printf("ERRO: Evento nao encontrado!");
+          pausarTerminal();
+        } else {
+          limparTerminal();
+          printf("Informacoes do evento '%s'\n", eventos->info.nome);
+          printf("Data: %s\n\n", eventos->info.data);
+          printf("Atividades:\n");
+          exibirNomeAtividades(eventos->info.atividades);
+          printf("\nParticipantes:\n");
+          imprimirParticipantesEvento(eventos->info);
+          printf("\nFila de Check-In:\n");
+          imprimirFila(eventos->info.filaCheckIn);
+          pausarTerminal();
         }
         break;
       case '0':
@@ -115,8 +133,6 @@ void menuAdministracao(ListaEventos **listaEventos) {
 void menuEditarEvento(Evento *e) {
   char opcaoMenuEditarEvento = '\0';
   while (opcaoMenuEditarEvento != '0') {
-    fflush(stdin);
-    getchar();
     limparTerminal();
     printf("Você está editando o evento \"%s\"\n\n", e->nome);
     printf("1 » Adicionar atividade\n");
@@ -128,19 +144,20 @@ void menuEditarEvento(Evento *e) {
     printf("➜ ");
 
     scanf(" %c", &opcaoMenuEditarEvento);
+    limparBuffer();
 
     switch(opcaoMenuEditarEvento) {
       case '1':
-        getchar();
         char *nome_atividade = digitarNomeAtividade();
-        fflush(stdin);
-        getchar();
         char *horario_atividade = digitarHorarioAtividade();
-        // getchar();
-        fflush(stdin);
-
-        e->atividades = inserirAtividade(e->atividades, nome_atividade, horario_atividade);
-
+        if (!validarHorario(horario_atividade)) {
+          printf("ERRO: Voce digitou o horario no formato invalido!\nUse: HH:mm");
+          pausarTerminal();
+        } else {
+          e->atividades = inserirAtividade(e->atividades, nome_atividade, horario_atividade);
+        }
+        free(nome_atividade);
+        free(horario_atividade);
         break;
       case '2':
         limparTerminal();
@@ -148,15 +165,31 @@ void menuEditarEvento(Evento *e) {
         pausarTerminal();
         break;
       case '3':
-        printf("Funcao de remover atividade aq");
+        char *nome_remover = digitarNomeAtividade();
+        e->atividades = removerAtividade(e->atividades, nome_remover, e->pilhaAtividades);
+        free(nome_remover);
+        pausarTerminal();
         break;
       case '4':
-        fflush(stdin);
-        menuVerAtividade();
+        char *atividade = digitarNomeAtividade();
+        ListaAtividade *atividades = buscarAtividade(e->atividades, atividade);
+        if (atividades == NULL) {
+          printf("ERRO: Atividade '%s' nao encontrada!\n", atividade);
+          pausarTerminal();
+        } else {
+          menuVerAtividade(&atividades->info);
+        }
+        free(atividade);
         break;
       case 'Z':
       case 'z':
-        printf("Desfazer a pilha aq");
+        int resultado = desfazerRemocaoAtividade(&e->atividades, e->pilhaAtividades);
+        if (resultado) {
+          printf("Ultima remocao de atividade foi desfeita!\n");
+        } else {
+          printf("ERRO: Nao foi possivel desfazer a ultima remocao da atividade!");
+        }
+        pausarTerminal();
         break;
       case '0':
         break;
@@ -168,24 +201,23 @@ void menuEditarEvento(Evento *e) {
   }
 }
 
-void menuVerAtividade() {
+void menuVerAtividade(Atividade *atividade) {
   char opcaoMenuVerAtividade = '\0';
   while (opcaoMenuVerAtividade != '0') {
-    fflush(stdin);
     limparTerminal();
-    getchar();
 
-    printf("Titulo: %s", "MiniCurso MySQL\n");
-    printf("Horario: %s", "22:31 as 22:49\n\n");
+    printf("Titulo: %s\n", atividade->titulo);
+    printf("Horario: %s\n\n", atividade->horario);
     printf("1 » Gerenciar Participantes\n");
     printf("0 » Voltar\n");
     printf("➜ ");
 
-    scanf("%c", &opcaoMenuVerAtividade);
-    
+    scanf(" %c", &opcaoMenuVerAtividade);
+    limparBuffer();
+
     switch(opcaoMenuVerAtividade) {
       case '1':
-        menuParticipantesAtividade();
+        menuParticipantesAtividade(atividade);
         break;
       case '0':
         break;
@@ -197,14 +229,12 @@ void menuVerAtividade() {
   }
 }
 
-void menuParticipantesAtividade() {
+void menuParticipantesAtividade(Atividade *atividade) {
   char opcaoMenuParticipantesAtividade = '\0';
   while (opcaoMenuParticipantesAtividade != '0') {
-    fflush(stdin);
     limparTerminal();
-    getchar();
 
-    printf("Voce esta gerenciando os participantes da ativiade \"%s\"\n\n", "MiniCurso MySQL");
+    printf("Voce esta gerenciando os participantes da atividade \"%s\"\n\n", atividade->titulo);
     printf("1 » Cadastrar participante\n");
     printf("2 » Listar participantes\n");
     printf("3 » Remover participante\n");
@@ -212,17 +242,44 @@ void menuParticipantesAtividade() {
     printf("0 » Voltar\n");
     printf("➜ ");
 
-    scanf("%c", &opcaoMenuParticipantesAtividade);
+    scanf(" %c", &opcaoMenuParticipantesAtividade);
+    limparBuffer();
 
     switch(opcaoMenuParticipantesAtividade) {
+      char *nomeParticipante;
+      char *matriculaParticipante;
+      char *emailParticipante;
       case '1':
+        nomeParticipante = digitarNomeParticipante();
+        matriculaParticipante = digitarMatriculaParticipante();
+        emailParticipante = digitarEmailParticipante();
+
+        ListaParticipante *novoParticipante = criarParticipante(matriculaParticipante, nomeParticipante, emailParticipante);
+        inserirParticipante(&atividade->participantes, novoParticipante);
+
+        free(nomeParticipante);
+        free(matriculaParticipante);
+        free(emailParticipante);
+        pausarTerminal();
         break;
       case '2':
+        if (atividade->participantes == NULL) {
+          printf("ERRO: Nao foi cadastrado nenhum participante");
+        } else {
+          imprimirListaParticipantesOrdenada(atividade->participantes);
+        }
+        pausarTerminal();
         break;
       case '3':
+        matriculaParticipante = digitarMatriculaParticipante();
+        removerParticipante(&atividade->participantes, matriculaParticipante, atividade->pilhaParticipantes);
+        free(matriculaParticipante);
+        pausarTerminal();
         break;
       case 'Z':
       case 'z':
+        desfazerRemocaoParticipante(&atividade->participantes, atividade->pilhaParticipantes);
+        pausarTerminal();
         break;
       case '0':
         break;
@@ -234,43 +291,22 @@ void menuParticipantesAtividade() {
   }
 }
 
-void menuCheckIn() {
-  fflush(stdin);
-  getchar();
+void menuCheckIn(ListaEventos *listaEventos) {
   limparTerminal();
 
-  char matricula[50];
-  char nomeEvento[100];
-
-  printf("Digite o nome do evento: ");
-  scanf("%100[^\n]", nomeEvento);
-  getchar();
-  printf("Digite a sua matricula: ");
-  scanf("%s", matricula);
-
-  int resultado = 1;
-
-  if (resultado) {
-    printf("Check-In realizado com sucesso!");
-  } else {
-    printf("Nao foi possivel realizar o check-in");
+  char *nomeEvento = digitarNomeEvento();
+  ListaEventos *eventos = buscarEvento(listaEventos, nomeEvento);
+  if (eventos == NULL) {
+    printf("\nERRO: Nao foi encontrado um evento com este nome!\n");
+    free(nomeEvento);
+    pausarTerminal();
+    return;
   }
+  char *matriculaParticipante = digitarMatriculaParticipante();
 
+  realizarCheckIn(&eventos->info, matriculaParticipante);
+
+  free(nomeEvento);
+  free(matriculaParticipante);
   pausarTerminal();
-}
-
-void limparTerminal() {
-  #if defined(_WIN32) || defined(_WIN64)
-    system("cls");
-  #else
-    printf("\033[H\033[2J");
-    fflush(stdout);
-  #endif
-}
-
-void pausarTerminal() {
-  printf("\nPressione ENTER para continuar...\n");
-  char c;
-  while((c = getchar()) != '\n' && c != EOF) {}
-  getchar();
 }

@@ -1,6 +1,6 @@
+#include "../estruturas/struct_participante.h"
 #include "lista_duplamente_encadeada_participante.h"
 #include "pilha_participante.h"
-#include "../estruturas/struct_participante.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,6 +9,10 @@
 
 PilhaParticipante *inicializarPilhaParticipantes(){
     PilhaParticipante *p = (PilhaParticipante *)malloc(sizeof(PilhaParticipante));
+    if (p == NULL) {
+        printf("Erro ao alocar memória para a pilha de participantes.\n");
+        exit(1);
+    }
     p->topo = NULL;
     return p;
 }
@@ -27,7 +31,7 @@ int empilharParticipante(PilhaParticipante* pilha, Participante participante){
 
 int desempilharParticipante(PilhaParticipante* pilha, Participante* destino){
     if(pilha->topo == NULL){
-        printf("Pilha vazia\n");
+        // printf("Pilha vazia\n");
         return 0;
     }
     NoParticipante* temp = pilha->topo;
@@ -37,7 +41,7 @@ int desempilharParticipante(PilhaParticipante* pilha, Participante* destino){
     return 1;
 }
 
-void liberarPilha(PilhaParticipante* pilha){
+void liberarPilhaParticipante(PilhaParticipante* pilha){
     Participante p;
     while(desempilharParticipante(pilha, &p));
 }
@@ -45,7 +49,7 @@ void liberarPilha(PilhaParticipante* pilha){
 
 // Manipulação de participantes na lista duplamente encadeada
 
-ListaParticipante* inicializarListaDuplamenteEncadeada(){
+ListaParticipante* inicializarListaParticipantes(){
   return NULL;
 }
 
@@ -72,13 +76,27 @@ ListaParticipante* criarParticipante(char matricula[], char nome[], char email[]
   return novoParticipante; 
 }
 
+int existeParticipante(ListaParticipante *lista, char matriculaParticipante[]) {
+    int existe = 0;
+    ListaParticipante *atual = lista;
+    while (atual != NULL) {
+        if (strcasecmp(atual->info.matricula, matriculaParticipante) == 0){
+            existe = 1;
+            return existe;
+        }
+        atual = atual->proximo;
+    }
+
+    return existe;
+}
+
 int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoParticipante){
   if (*lista == NULL){
     *lista = novoParticipante;
-    printf("Participante inserido:\n");
-    printf("Matrícula: %s\n", novoParticipante->info.matricula);
-    printf("Nome: %s\n", novoParticipante->info.nome);
-    printf("Email: %s\n\n", novoParticipante->info.email);
+    // printf("Participante inserido:\n");
+    // printf("Matrícula: %s\n", novoParticipante->info.matricula);
+    // printf("Nome: %s\n", novoParticipante->info.nome);
+    // printf("Email: %s\n\n", novoParticipante->info.email);
     return 1;
   }
 
@@ -99,10 +117,10 @@ int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoPartic
   novoParticipante->anterior = atual;
   novoParticipante->proximo = NULL;
 
-  printf("Participante inserido:\n");
-  printf("Matrícula: %s\n", novoParticipante->info.matricula);
-  printf("Nome: %s\n", novoParticipante->info.nome);
-  printf("Email: %s\n\n", novoParticipante->info.email);
+//   printf("Participante inserido:\n");
+//   printf("Matrícula: %s\n", novoParticipante->info.matricula);
+//   printf("Nome: %s\n", novoParticipante->info.nome);
+//   printf("Email: %s\n\n", novoParticipante->info.email);
 
   return 1;
 }
@@ -183,11 +201,43 @@ int desfazerRemocaoParticipante(ListaParticipante** lista, PilhaParticipante* pi
     return inserirParticipante(lista, novoParticipante);
 }
 
+ListaParticipante *copiarListaParticipante(ListaParticipante *lista) {
+    if (lista == NULL) {
+        return NULL;
+    }
+
+    ListaParticipante *copia = NULL;
+    ListaParticipante *ultimo = NULL;
+
+    ListaParticipante *atual = lista;
+    while (atual != NULL) {
+        ListaParticipante* novoNo = malloc(sizeof(ListaParticipante));
+        if (novoNo == NULL) {
+            perror("Erro ao alocar na memoria");
+            exit(1);
+        }
+
+        novoNo->info = atual->info;
+        novoNo->proximo = NULL;
+        novoNo->anterior = ultimo;
+
+        if (ultimo == NULL) {
+            copia = novoNo;
+        } else {
+            ultimo->proximo = novoNo;
+        }
+        ultimo = novoNo;
+
+        atual = atual->proximo;
+    }
+
+    return copia;
+}
+
 ListaParticipante* ordernarListaParticipantesPeloNome(ListaParticipante* lista){
     if (lista == NULL || lista->proximo == NULL){
         return lista;
     }
-
     ListaParticipante* lento = lista;
     ListaParticipante* rapido = lista;
 
@@ -235,36 +285,18 @@ ListaParticipante* ordernarListaParticipantesPeloNome(ListaParticipante* lista){
         atual = atual->proximo;
     }
     
-    /*
-        ----------------------------------------------------------------------------------------
-        Não printar pq ele vai mostrar mais de uma vez no terminal (lado esquerdo e dps os dois)
-        ----------------------------------------------------------------------------------------
-    */
-
-    // atual = resultado;
-    // printf("\n Lista de Participantes Ordenada por Nome: \n");
-    // while (atual != NULL){
-    //     printf("Nome: %s | Matrícula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
-    //     atual = atual->proximo;
-    // }
-    
-    // antes que me perguntem, tem que retornar se não a cabeça ainda vai apontar pro antiga cabeça 
     return resultado;
 }
 
 void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
-    ListaParticipante *resultado = ordernarListaParticipantesPeloNome(lista);
+    ListaParticipante *copia = copiarListaParticipante(lista);
+    ListaParticipante *resultado = ordernarListaParticipantesPeloNome(copia);
     ListaParticipante *atual = resultado;
-    printf("Lista dos Participantes Ordenada Pelo Nome\n");
+    printf("\n=== Lista Participantes [A-Z] ===\n\n");
     while (atual != NULL) {
         printf("Nome: %s | Matricula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
         atual = atual->proximo;
     }
     printf("\n");
+    liberarListaParticipantes(&copia);
 }
-
-
-
-
-
-
