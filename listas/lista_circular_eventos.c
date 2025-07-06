@@ -136,7 +136,7 @@ int participanteCadastradoNoEvento(Evento *evento, char matriculaParticipante[])
     int existe = 0;
     ListaAtividade *atividades = evento->atividades;
     while (atividades != NULL) {
-        int participanteExiste = buscarParticipante(atividades->info.participantes, matriculaParticipante);
+        int participanteExiste = existeParticipante(atividades->info.participantes, matriculaParticipante);
         if (participanteExiste) {
             existe = 1;
             return existe;
@@ -163,4 +163,36 @@ void realizarCheckIn(Evento *evento, char matriculaParticipante[]) {
     inserirFila(evento->filaCheckIn, matriculaParticipante);
     int posicao = posicaoNaFila(evento->filaCheckIn, matriculaParticipante);
     printf("\nCheck-In realizado com sucesso!\nVoce esta na posicao: %d", posicao);
+}
+
+void imprimirParticipantesEvento(Evento evento) {
+    ListaParticipante *l = inicializarListaParticipantes();
+    ListaAtividade *atv = evento.atividades;
+
+    while (atv != NULL) {
+        ListaParticipante *part = atv->info.participantes;
+        while (part != NULL) {
+            if (!existeParticipante(l, part->info.matricula)) {
+                ListaParticipante *lPart = criarParticipante(part->info.matricula, part->info.nome, part->info.email);
+                inserirParticipante(&l, lPart);
+            }
+            part = part->proximo;
+        }
+        atv = atv->prox;
+    }
+
+    if (l == NULL) {
+        printf("Nenhum participante foi adicionado ainda!\n");
+        return;
+    }
+
+    ListaParticipante *listaOrdenada = ordernarListaParticipantesPeloNome(l);
+
+    ListaParticipante *atual = listaOrdenada;
+    while (atual != NULL) {
+        printf("- %s [%s]\n", atual->info.nome, atual->info.matricula);
+        atual = atual->proximo;
+    }
+
+    free(l);
 }

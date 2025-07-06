@@ -80,3 +80,18 @@ int posicaoNaFila(FilaCheckIn *fila, char matriculaParticipante[]) {
   posicao = -1;
   return posicao;
 }
+
+void imprimirFila(FilaCheckIn *fila) {
+  if (filaVazia(fila)) {
+    printf("Ninguem fez o check-in ainda");
+    return;
+  }
+  NoFilaCheckIn *atual = fila->inicio;
+  int pos = 1;
+  while (atual != NULL) {
+    printf("%d. %s\n", pos, atual->matriculaParticipante);
+    atual = atual->proximo;
+    pos++;
+  }
+  printf("\n");
+}

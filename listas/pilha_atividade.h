@@ -1,16 +1,15 @@
+#include "../estruturas/struct_atividade.h"
+
 #ifndef PILHA_ATIVIDADE_H
 #define PILHA_ATIVIDADE_H
-#include "../estruturas/struct_atividade.h"
-// Forward declaration para evitar dependência circular
-struct ListaAtividade;
-typedef struct ListaAtividade ListaAtividade;
 
-// Estrutura da pilha de atividades
-// Cada nó da pilha será um ListaAtividade, mas só o campo info será usado
-// para guardar uma cópia da Atividade
+typedef struct NoPilhaAtividade {
+    Atividade info;
+    struct NoPilhaAtividade *proximo;
+} NoPilhaAtividade;
 
 typedef struct PilhaAtividade {
-    ListaAtividade *topo;
+    NoPilhaAtividade *topo;
 } PilhaAtividade;
 
 PilhaAtividade *inicializarPilhaAtividades();

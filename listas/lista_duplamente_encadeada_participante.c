@@ -9,6 +9,10 @@
 
 PilhaParticipante *inicializarPilhaParticipantes(){
     PilhaParticipante *p = (PilhaParticipante *)malloc(sizeof(PilhaParticipante));
+    if (p == NULL) {
+        printf("Erro ao alocar memória para a pilha de participantes.\n");
+        exit(1);
+    }
     p->topo = NULL;
     return p;
 }
@@ -27,7 +31,7 @@ int empilharParticipante(PilhaParticipante* pilha, Participante participante){
 
 int desempilharParticipante(PilhaParticipante* pilha, Participante* destino){
     if(pilha->topo == NULL){
-        printf("Pilha vazia\n");
+        // printf("Pilha vazia\n");
         return 0;
     }
     NoParticipante* temp = pilha->topo;
@@ -45,7 +49,7 @@ void liberarPilha(PilhaParticipante* pilha){
 
 // Manipulação de participantes na lista duplamente encadeada
 
-ListaParticipante* inicializarListaDuplamenteEncadeada(){
+ListaParticipante* inicializarListaParticipantes(){
   return NULL;
 }
 
@@ -72,7 +76,7 @@ ListaParticipante* criarParticipante(char matricula[], char nome[], char email[]
   return novoParticipante; 
 }
 
-int buscarParticipante(ListaParticipante *lista, char matriculaParticipante[]) {
+int existeParticipante(ListaParticipante *lista, char matriculaParticipante[]) {
     int existe = 0;
     ListaParticipante *atual = lista;
     while (atual != NULL) {
@@ -89,10 +93,10 @@ int buscarParticipante(ListaParticipante *lista, char matriculaParticipante[]) {
 int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoParticipante){
   if (*lista == NULL){
     *lista = novoParticipante;
-    printf("Participante inserido:\n");
-    printf("Matrícula: %s\n", novoParticipante->info.matricula);
-    printf("Nome: %s\n", novoParticipante->info.nome);
-    printf("Email: %s\n\n", novoParticipante->info.email);
+    // printf("Participante inserido:\n");
+    // printf("Matrícula: %s\n", novoParticipante->info.matricula);
+    // printf("Nome: %s\n", novoParticipante->info.nome);
+    // printf("Email: %s\n\n", novoParticipante->info.email);
     return 1;
   }
 
@@ -113,10 +117,10 @@ int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoPartic
   novoParticipante->anterior = atual;
   novoParticipante->proximo = NULL;
 
-  printf("Participante inserido:\n");
-  printf("Matrícula: %s\n", novoParticipante->info.matricula);
-  printf("Nome: %s\n", novoParticipante->info.nome);
-  printf("Email: %s\n\n", novoParticipante->info.email);
+//   printf("Participante inserido:\n");
+//   printf("Matrícula: %s\n", novoParticipante->info.matricula);
+//   printf("Nome: %s\n", novoParticipante->info.nome);
+//   printf("Email: %s\n\n", novoParticipante->info.email);
 
   return 1;
 }

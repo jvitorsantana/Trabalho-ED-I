@@ -1,15 +1,9 @@
-#include "../estruturas/struct_atividade.h"
 #include "lista_duplamente_encadeada_participante.h"
+#include "../estruturas/struct_atividade.h"
+#include "pilha_atividade.h"
 
 #ifndef LISTA_ENCADEADA_ATIVIDADES_H
 #define LISTA_ENCADEADA_ATIVIDADES_H
-
-// Forward declaration para evitar dependência circular
-
-struct PilhaAtividade;
-typedef struct PilhaAtividade PilhaAtividade;
-
-// // // // // // // // // // // // // // // // // // //
 
 typedef struct ListaAtividade {
     struct Atividade info;
@@ -24,6 +18,7 @@ ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo);
 ListaAtividade *copiarListaAtividade(ListaAtividade *lista);
 ListaAtividade *ordenarListaAtividadesPorHorario(ListaAtividade *lista);
 void exibirAtividades(ListaAtividade *lista);
+void exibirNomeAtividades(ListaAtividade *lista);
 int validarHorario(char *horario);
 int desfazerRemocaoAtividade(ListaAtividade **lista, PilhaAtividade *pilha);
 

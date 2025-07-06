@@ -6,7 +6,7 @@
 #include "estruturas/struct_evento.h"
 #include "listas/lista_circular_eventos.h"
 #include "listas/lista_encadeada_atividade.h"
-
+#include "listas/fila_check_in.h"
 
 void menuParticipantesAtividade(Atividade *atividade);
 void menuVerAtividade(Atividade *atividade);
@@ -62,6 +62,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
     printf("2 » Listar Eventos\n");
     printf("3 » Excluir Evento\n");
     printf("4 » Editar Evento\n");
+    printf("5 » Ver Evento\n");
     printf("0 » Voltar\n");
     printf("➜ ");
 
@@ -69,12 +70,14 @@ void menuAdministracao(ListaEventos **listaEventos) {
     limparBuffer();
 
     switch(opcaoAdmin) {
+      char *nomeEvento;
+      ListaEventos *eventos;
       case '1':
-        char *nome_inserir = digitarNomeEvento();
-        char *data_inserir = digitarDataEvento();
-        *listaEventos = inserirEvento(*listaEventos, nome_inserir, data_inserir);
-        free(nome_inserir);
-        free(data_inserir);
+        nomeEvento = digitarNomeEvento();
+        char *dataEvento = digitarDataEvento();
+        *listaEventos = inserirEvento(*listaEventos, nomeEvento, dataEvento);
+        free(nomeEvento);
+        free(dataEvento);
         pausarTerminal();
         break;
       case '2':
@@ -86,19 +89,38 @@ void menuAdministracao(ListaEventos **listaEventos) {
         pausarTerminal();
         break;
       case '3':
-        char *nome_remover = digitarNomeEvento();
-        *listaEventos = removerEvento(*listaEventos, nome_remover);
-        free(nome_remover);
+        nomeEvento = digitarNomeEvento();
+        *listaEventos = removerEvento(*listaEventos, nomeEvento);
+        free(nomeEvento);
         pausarTerminal();
         break;
       case '4':
-        char *nome_evento = digitarNomeEvento();
-        ListaEventos *eventos = buscarEvento(*listaEventos, nome_evento);
+        nomeEvento = digitarNomeEvento();
+        eventos = buscarEvento(*listaEventos, nomeEvento);
         if (eventos == NULL) {
           printf("ERRO: Evento nao encontrado!");
           pausarTerminal();
         } else {
           menuEditarEvento(&eventos->info); // OU &((*eventos).info)
+        }
+        break;
+      case '5':
+        nomeEvento = digitarNomeEvento();
+        eventos = buscarEvento(*listaEventos, nomeEvento);
+        if (eventos == NULL) {
+          printf("ERRO: Evento nao encontrado!");
+          pausarTerminal();
+        } else {
+          limparTerminal();
+          printf("Informacoes do evento '%s'\n", eventos->info.nome);
+          printf("Data: %s\n\n", eventos->info.data);
+          printf("Atividades:\n");
+          exibirNomeAtividades(eventos->info.atividades);
+          printf("\nParticipantes:\n");
+          imprimirParticipantesEvento(eventos->info);
+          printf("\n\nFila de Check-In:\n");
+          imprimirFila(eventos->info.filaCheckIn);
+          pausarTerminal();
         }
         break;
       case '0':
@@ -160,7 +182,12 @@ void menuEditarEvento(Evento *e) {
         break;
       case 'Z':
       case 'z':
-        desfazerRemocaoAtividade(&e->atividades, e->pilhaAtividades);
+        int resultado = desfazerRemocaoAtividade(&e->atividades, e->pilhaAtividades);
+        if (resultado) {
+          printf("Ultima remocao de atividade foi desfeita!\n");
+        } else {
+          printf("ERRO: Nao foi possivel desfazer a ultima remocao da atividade!");
+        }
         pausarTerminal();
         break;
       case '0':
