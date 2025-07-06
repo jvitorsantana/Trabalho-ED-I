@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 
 #include "funcoes.h"
 
@@ -143,4 +144,69 @@ int validarHorario(char *horario) {
     }
   }
   return 0; 
+}
+
+int validarData(char *data){
+  if (strlen(data) != 10 || data[2] != '/' || data[5] != '/'){
+    return 0;
+  }
+
+  char dia[3], mes[3], ano[5];
+  strncpy(dia, data, 2);
+  dia[2] = '\0';
+  strncpy(mes, data + 3, 2);
+  mes[2] = '\0';
+  strncpy(ano, data + 6, 4);
+  ano[4] = '\0';
+
+  for (int i = 0; i < 2; i++){
+    if (!isdigit(dia[i]) || !isdigit(mes[i])){
+      return 0;
+    }
+  }
+
+  for (int i = 0; i < 4; i++){
+    if (!isdigit(ano[i])){
+      return 0;
+    }
+  }
+  
+  int diaInt = atoi(dia);
+  int mesInt = atoi(mes);
+  int anoInt = atoi(ano);
+
+  if (anoInt < 1900 || anoInt > 9999 || mesInt < 1 || mesInt > 12 || diaInt < 1 || diaInt > 31){
+    return 0;
+  }
+
+  int diasNoMes[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+  if ((anoInt % 4 == 0 && anoInt % 100 !=0) || anoInt % 400 == 0){
+    diasNoMes[1] = 29;
+  }
+
+  if (diaInt > diasNoMes[mesInt - 1]){
+    return 0;
+  }
+
+  time_t t = time(NULL);
+  struct tm *dataAtual = localtime(&t);
+
+  int diaAtual = dataAtual->tm_mday;
+  int mesAtual = dataAtual->tm_mon + 1;
+  int anoAtual = dataAtual->tm_year + 1900;
+
+  if (anoInt < anoAtual){
+    return 0;
+  }
+
+  if (anoInt == anoAtual && mesInt < mesAtual){
+    return 0;
+  }
+
+  if (anoInt == anoAtual && mesInt == mesAtual && diaInt < diaAtual){
+    return 0;
+  }
+
+  return 1;
 }

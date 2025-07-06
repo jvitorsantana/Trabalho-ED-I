@@ -77,7 +77,11 @@ void menuAdministracao(ListaEventos **listaEventos) {
       case '1':
         nomeEvento = digitarNomeEvento();
         char *dataEvento = digitarDataEvento();
-        *listaEventos = inserirEvento(*listaEventos, nomeEvento, dataEvento);
+        if (!validarData(dataEvento)){
+          printf("ERRO: Voce digitou a data inválida!\nUse: DD/MM/AAAA");
+        } else{
+          *listaEventos = inserirEvento(*listaEventos, nomeEvento, dataEvento);
+        }
         free(nomeEvento);
         free(dataEvento);
         pausarTerminal();
@@ -162,6 +166,7 @@ void menuEditarEvento(Evento *e) {
         }
         free(nome_atividade);
         free(horario_atividade);
+        pausarTerminal();
         break;
       case '2':
         limparTerminal();
