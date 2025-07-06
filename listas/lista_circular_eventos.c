@@ -49,6 +49,16 @@ ListaEventos* inserirEvento(ListaEventos *lista, char nome[], char data[]){
 }
 
 void removerAux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual){
+    if (atual->info.atividades != NULL) {
+        liberarAtividades(atual->info.atividades);
+    }
+    if (atual->info.pilhaAtividades != NULL) {
+        liberarPilhaAtividades(atual->info.pilhaAtividades);
+    }
+    if (atual->info.filaCheckIn != NULL) {
+        liberarFila(atual->info.filaCheckIn);
+    }
+
     anterior->prox = atual->prox;
     if(atual == *lista){
         *lista = anterior;
@@ -65,10 +75,20 @@ ListaEventos* removerEvento(ListaEventos *lista, const char *nome){
     }
 
     if(strcasecmp(lista->info.nome, nome) == 0 && lista->prox == lista){
+        if (lista->info.atividades != NULL) {
+            liberarAtividades(lista->info.atividades);
+        }
+        if (lista->info.pilhaAtividades != NULL) {
+            liberarPilhaAtividades(lista->info.pilhaAtividades);
+        }
+        if (lista->info.filaCheckIn != NULL) {
+            liberarFila(lista->info.filaCheckIn);
+        }
         free(lista);
         printf("Evento removido com sucesso!");
         return NULL;
     }
+
     ListaEventos *atual = lista->prox;
     ListaEventos *anterior = lista;
     do{
@@ -90,7 +110,7 @@ void imprimirEventos(ListaEventos *lista){
     }
     ListaEventos *atual = lista->prox;
     do{
-        printf("Nome do evento: %s  | Data do evento: %s \n", atual->info.nome, atual->info.data);
+        printf("Nome do evento: %s | Data do evento: %s \n", atual->info.nome, atual->info.data);
         atual = atual->prox;
     }while(atual != lista->prox);
 }
@@ -101,6 +121,15 @@ void liberarListaCircularEventos(ListaEventos *lista) {
     }
 
     if (lista->prox == lista) {
+        if (lista->info.atividades != NULL) {
+            liberarAtividades(lista->info.atividades);
+        }
+        if (lista->info.pilhaAtividades != NULL) {
+            liberarPilhaAtividades(lista->info.pilhaAtividades);
+        }
+        if (lista->info.filaCheckIn != NULL) {
+            liberarFila(lista->info.filaCheckIn);
+        }
         free(lista);
         return;
     }
@@ -109,6 +138,15 @@ void liberarListaCircularEventos(ListaEventos *lista) {
     ListaEventos *a_remover = NULL;
 
     while (auxiliar != lista) {
+        if (auxiliar->info.atividades != NULL) {
+            liberarAtividades(auxiliar->info.atividades);
+        }
+        if (auxiliar->info.pilhaAtividades != NULL) {
+            liberarPilhaAtividades(auxiliar->info.pilhaAtividades);
+        }
+        if (auxiliar->info.filaCheckIn != NULL) {
+            liberarFila(auxiliar->info.filaCheckIn);
+        }
         a_remover = auxiliar;
         auxiliar = auxiliar->prox;
         free(a_remover);

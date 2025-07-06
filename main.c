@@ -44,6 +44,7 @@ void menuPrincipal(ListaEventos **listaEventos) {
         menuCheckIn(*listaEventos);
         break;
       case '0':
+        liberarListaCircularEventos(*listaEventos);
         break;
       default:
         printf("Opcao invalida!");

@@ -152,6 +152,13 @@ ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo, PilhaAtivi
 void liberarAtividades(ListaAtividade *lista) {
   ListaAtividade *atual = lista;
   while (atual != NULL) {
+    if (atual->info.participantes != NULL) {
+      liberarListaParticipantes(&atual->info.participantes);
+    }
+    if (atual->info.pilhaParticipantes != NULL) {
+      liberarPilhaParticipante(atual->info.pilhaParticipantes);
+    }
+    
     ListaAtividade *prox = atual->prox;
     free(atual);
     atual = prox;

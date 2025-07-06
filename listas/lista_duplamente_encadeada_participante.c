@@ -41,7 +41,7 @@ int desempilharParticipante(PilhaParticipante* pilha, Participante* destino){
     return 1;
 }
 
-void liberarPilha(PilhaParticipante* pilha){
+void liberarPilhaParticipante(PilhaParticipante* pilha){
     Participante p;
     while(desempilharParticipante(pilha, &p));
 }
