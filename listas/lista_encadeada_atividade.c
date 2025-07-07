@@ -223,5 +223,5 @@ void exibirNomeAtividades(ListaAtividade *lista) {
     printf("- %s | Horario: %s\n", atual->info.titulo, atual->info.horario);
     atual = atual->prox;
   }
-  liberarAtividades(copia);
+  free(copia);
 }
