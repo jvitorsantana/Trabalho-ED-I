@@ -94,14 +94,6 @@ int existeParticipante(ListaParticipante *lista, char matriculaParticipante[]) {
 int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoParticipante){
   if (*lista == NULL){
     *lista = novoParticipante;
-    printf("Participante inserido com sucesso!\n");
-
-    // printf("Participante inserido:\n");
-    // printf("Matrícula: %s\n", novoParticipante->info.matricula);
-    // printf("Nome: %s\n", novoParticipante->info.nome);
-    // printf("Email: %s\n\n", novoParticipante->info.email);
-
-
     return 1;
   }
 
@@ -121,13 +113,6 @@ int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoPartic
   atual->proximo = novoParticipante;
   novoParticipante->anterior = atual;
   novoParticipante->proximo = NULL;
-
-//   printf("Participante inserido:\n");
-//   printf("Matrícula: %s\n", novoParticipante->info.matricula);
-//   printf("Nome: %s\n", novoParticipante->info.nome);
-//   printf("Email: %s\n\n", novoParticipante->info.email);
-
-  printf("Participante inserido com sucesso!\n");
 
   return 1;
 }

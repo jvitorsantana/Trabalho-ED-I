@@ -264,7 +264,12 @@ void menuParticipantesAtividade(Atividade *atividade) {
         emailParticipante = digitarEmailParticipante();
 
         ListaParticipante *novoParticipante = criarParticipante(matriculaParticipante, nomeParticipante, emailParticipante);
-        inserirParticipante(&atividade->participantes, novoParticipante);
+        int resultado = inserirParticipante(&atividade->participantes, novoParticipante);
+        if (resultado) {
+          printf("Participante inserido com sucesso!");
+        } else {
+          printf("ERRO: Este participante ja foi adicionado");
+        }
 
         free(nomeParticipante);
         free(matriculaParticipante);
