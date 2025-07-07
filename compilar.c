@@ -9,7 +9,7 @@ int main() {
   printf("Compilando...\n");
   int resultado;
   #if defined(_WIN32) || defined(_WIN64)
-    resultado = system("gcc -o programa.exe -Wall -Wextra -finput-charset=UTF-8 main.c listas/lista_circular_eventos.c listas/lista_duplamente_encadeada_participante.c listas/lista_encadeada_atividade.c listas/fila_check_in.c funcoes/funcoes.c");
+    resultado = system("gcc -o programa.exe -Wall -Wextra -finput-charset=UTF-8 main.c listas/lista_circular_eventos.c listas/lista_duplamente_encadeada_participante.c listas/lista_encadeada_atividade.c listas/fila_check_in.c listas/pilha_atividade.c listas/pilha_participante.c funcoes/funcoes.c");
     if (resultado) {
       printf("\nErro na compilacao!\n");
     } else {
@@ -17,10 +17,11 @@ int main() {
       system("programa.exe");
     }
   #else
-    resultado = system("gcc -o programa -Wall -Wextra -finput-charset=UTF-8 main.c listas/lista_circular_eventos.c listas/lista_duplamente_encadeada_participante.c listas/lista_encadeada_atividade.c listas/fila_check_in.c funcoes/funcoes.c");
-    if (resultado) {
-      printf("\nErro na compilacao!\n");
-    } else {
+  resultado = system("gcc -o programa -Wall -Wextra -finput-charset=UTF-8 main.c listas/lista_circular_eventos.c listas/lista_duplamente_encadeada_participante.c listas/lista_encadeada_atividade.c listas/fila_check_in.c listas/pilha_atividade.c listas/pilha_participante.c funcoes/funcoes.c");
+  if (resultado)
+  {
+    printf("\nErro na compilacao!\n");
+  } else {
       system("./programa");
     }
   #endif

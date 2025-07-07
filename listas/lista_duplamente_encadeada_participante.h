@@ -1,4 +1,5 @@
 #include "pilha_participante.h"
+#include "fila_check_in.h"
 #include "../estruturas/struct_participante.h" 
 
 #ifndef LISTA_DUPLAMENTE_ENCADEADA_PARTICIPANTE_H

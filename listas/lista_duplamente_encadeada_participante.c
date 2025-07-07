@@ -1,11 +1,11 @@
-#include "../estruturas/struct_participante.h"
-#include "lista_duplamente_encadeada_participante.h"
-#include "pilha_participante.h"
-#include "fila_check_in.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "../estruturas/struct_participante.h"
+#include "lista_duplamente_encadeada_participante.h"
+#include "pilha_participante.h"
+#include "fila_check_in.h"
 
 // Manipulação de participantes na lista duplamente encadeada
 
@@ -101,7 +101,7 @@ void liberarListaParticipantes(ListaParticipante** lista){
     *lista = NULL;
 }
 
-int removerParticipante(ListaParticipante** lista, char matricula[], PilhaParticipante* pilha, FilaCheckIn** fila){
+int removerParticipante(ListaParticipante** lista, char matricula[], PilhaParticipante* pilha, FilaCheckIn** fila) {
     if (*lista == NULL){
         printf("Não há participantes para serem removidos!\n");
         return 0;
