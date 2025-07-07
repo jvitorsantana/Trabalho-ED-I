@@ -160,7 +160,6 @@ void menuEditarEvento(Evento *e) {
         char *horario_atividade = digitarHorarioAtividade();
         if (!validarHorario(horario_atividade)) {
           printf("ERRO: Voce digitou o horario no formato invalido!\nUse: HH:mm");
-          pausarTerminal();
         } else {
           e->atividades = inserirAtividade(e->atividades, nome_atividade, horario_atividade);
         }
