@@ -1,50 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// #include <ctype.h>
-
-#include "pilha_atividade.h"
 #include "lista_encadeada_atividade.h"
 #include "lista_duplamente_encadeada_participante.h"
-
-
-PilhaAtividade *inicializarPilhaAtividades() {
-  PilhaAtividade *pilha = (PilhaAtividade *) malloc(sizeof(PilhaAtividade));
-  if (pilha == NULL) {
-    printf("Erro ao alocar memória para a pilha de atividades.\n");
-    exit(1);
-  }
-  pilha->topo = NULL;
-  return pilha;
-}
-
-int empilharAtividade(PilhaAtividade *pilha, Atividade atividade){
-  NoPilhaAtividade *novoNo = (NoPilhaAtividade *) malloc(sizeof(NoPilhaAtividade));
-  if (novoNo == NULL) {
-    return 0;
-  }
-  novoNo->info = atividade;
-  novoNo->proximo = pilha->topo;
-  pilha->topo = novoNo;
-  return 1;
-}
-
-int desempilharAtividade(PilhaAtividade *pilha, Atividade *destino) {
-  if (pilha->topo == NULL) {
-    return 0; // Pilha vazia
-  }
-
-  NoPilhaAtividade *temp = pilha->topo;
-  *destino = temp->info; 
-  pilha->topo = temp->proximo; 
-  free(temp);
-  return 1;
-}
-
-void liberarPilhaAtividades(PilhaAtividade *pilha) {
-  Atividade atv;
-  while (desempilharAtividade(pilha, &atv));
-}
+#include "pilha_atividade.c"
 
 int desfazerRemocaoAtividade(ListaAtividade **lista, PilhaAtividade *pilha){
   if(pilha->topo == NULL){

@@ -10,8 +10,7 @@ void limparTerminal() {
   #if defined(_WIN32) || defined(_WIN64)
     system("cls");
   #else
-    printf("\033[H\033[2J");
-    fflush(stdout);
+    system("clear");
   #endif
 }
 
@@ -19,7 +18,7 @@ void pausarTerminal() {
   printf("\nPressione ENTER para continuar...\n");
   char c;
   while((c = getchar()) != '\n' && c != EOF) {}
-  getchar();
+  // getchar();
 }
 
 void limparBuffer() {
