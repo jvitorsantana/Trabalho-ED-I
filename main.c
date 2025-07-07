@@ -8,8 +8,8 @@
 #include "listas/lista_encadeada_atividade.h"
 #include "listas/fila_check_in.h"
 
-void menuParticipantesAtividade(Atividade *atividade);
-void menuVerAtividade(Atividade *atividade);
+void menuParticipantesAtividade(Atividade *atividade, FilaCheckIn* fila);
+void menuVerAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn);
 void menuEditarEvento(Evento *e);
 void menuAdministracao(ListaEventos **listaEventos);
 void menuCheckIn(ListaEventos *listaEventos);
@@ -186,7 +186,7 @@ void menuEditarEvento(Evento *e) {
           printf("ERRO: Atividade '%s' nao encontrada!\n", atividade);
           pausarTerminal();
         } else {
-          menuVerAtividade(&atividades->info);
+          menuVerAtividade(&atividades->info, e->filaCheckIn);
         }
         free(atividade);
         break;
@@ -210,7 +210,7 @@ void menuEditarEvento(Evento *e) {
   }
 }
 
-void menuVerAtividade(Atividade *atividade) {
+void menuVerAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) {
   char opcaoMenuVerAtividade = '\0';
   while (opcaoMenuVerAtividade != '0') {
     limparTerminal();
@@ -226,7 +226,7 @@ void menuVerAtividade(Atividade *atividade) {
 
     switch(opcaoMenuVerAtividade) {
       case '1':
-        menuParticipantesAtividade(atividade);
+        menuParticipantesAtividade(atividade, filaCheckIn);
         break;
       case '0':
         break;
@@ -238,7 +238,7 @@ void menuVerAtividade(Atividade *atividade) {
   }
 }
 
-void menuParticipantesAtividade(Atividade *atividade) {
+void menuParticipantesAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) {
   char opcaoMenuParticipantesAtividade = '\0';
   while (opcaoMenuParticipantesAtividade != '0') {
     limparTerminal();
@@ -286,7 +286,7 @@ void menuParticipantesAtividade(Atividade *atividade) {
         break;
       case '3':
         matriculaParticipante = digitarMatriculaParticipante();
-        removerParticipante(&atividade->participantes, matriculaParticipante, atividade->pilhaParticipantes);
+        removerParticipante(&atividade->participantes, matriculaParticipante, atividade->pilhaParticipantes, &filaCheckIn);
         free(matriculaParticipante);
         pausarTerminal();
         break;

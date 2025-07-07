@@ -3,7 +3,7 @@
 #include <string.h>
 #include "lista_encadeada_atividade.h"
 #include "lista_duplamente_encadeada_participante.h"
-#include "pilha_atividade.c"
+#include "pilha_atividade.h"
 
 int desfazerRemocaoAtividade(ListaAtividade **lista, PilhaAtividade *pilha){
   if(pilha->topo == NULL){

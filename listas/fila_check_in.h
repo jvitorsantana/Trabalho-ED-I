@@ -18,5 +18,6 @@ void inserirFila(FilaCheckIn *fila, char matriculaParticipante[]);
 int existeNaFila(FilaCheckIn *fila, char matriculaParticipante[]);
 int posicaoNaFila(FilaCheckIn *fila, char matriculaParticipante[]);
 void imprimirFila(FilaCheckIn *fila);
+int removerFila(FilaCheckIn* fila, char matriculaParticipante[]);
 
 #endif
