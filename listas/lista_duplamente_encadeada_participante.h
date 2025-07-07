@@ -16,7 +16,7 @@ ListaParticipante *criarParticipante(char matricula[], char nome[], char email[]
 int existeParticipante(ListaParticipante *lista, char matriculaParticipante[]);
 int inserirParticipante(ListaParticipante **lista, ListaParticipante *novoParticipante);
 void liberarListaParticipantes(ListaParticipante **lista);
-int removerParticipante(ListaParticipante **lista, char matricula[], PilhaParticipante *pilha);
+int removerParticipante(ListaParticipante **lista, char matricula[], PilhaParticipante *pilha, FilaCheckIn** fila);
 int desfazerRemocaoParticipante(ListaParticipante **lista, PilhaParticipante *pilha);
 ListaParticipante *ordernarListaParticipantesPeloNome(ListaParticipante *lista);
 void imprimirListaParticipantesOrdenada(ListaParticipante *lista);
