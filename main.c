@@ -292,7 +292,10 @@ void menuParticipantesAtividade(Atividade *atividade) {
         break;
       case 'Z':
       case 'z':
-        desfazerRemocaoParticipante(&atividade->participantes, atividade->pilhaParticipantes);
+        int result = desfazerRemocaoParticipante(&atividade->participantes, atividade->pilhaParticipantes);
+        if (result) {
+          printf("Participante restaurado com sucesso!");
+        }
         pausarTerminal();
         break;
       case '0':
