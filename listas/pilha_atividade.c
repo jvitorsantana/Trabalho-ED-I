@@ -15,6 +15,7 @@ PilhaAtividade *inicializarPilhaAtividades() {
   return pilha;
 }
 
+// Empilha uma nova atividade no topo da pilha.
 int empilharAtividade(PilhaAtividade *pilha, Atividade atividade){
   NoPilhaAtividade *novoNo = (NoPilhaAtividade *) malloc(sizeof(NoPilhaAtividade));
   if (novoNo == NULL) {
@@ -26,6 +27,7 @@ int empilharAtividade(PilhaAtividade *pilha, Atividade atividade){
   return 1;
 }
 
+// Desempilha a atividade do topo e armazena seus dados no destino.
 int desempilharAtividade(PilhaAtividade *pilha, Atividade *destino) {
   if (pilha->topo == NULL) {
     return 0; // Pilha vazia
@@ -38,6 +40,7 @@ int desempilharAtividade(PilhaAtividade *pilha, Atividade *destino) {
   return 1;
 }
 
+// Libera toda a memória alocada para a pilha e seus elementos.
 void liberarPilhaAtividades(PilhaAtividade *pilha) {
   NoPilhaAtividade *atual = pilha->topo;
   if (atual != NULL) {
