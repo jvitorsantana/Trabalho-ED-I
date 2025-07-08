@@ -126,7 +126,7 @@ void liberarAtividades(ListaAtividade *lista) {
 ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo) {
   ListaAtividade *atual = lista;
   while (atual != NULL) {
-    if (strcmp(atual->info.titulo, titulo) == 0) {
+    if (strcasecmp(atual->info.titulo, titulo) == 0) {
       return atual;
     }
     atual = atual->prox;
