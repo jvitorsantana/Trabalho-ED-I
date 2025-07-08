@@ -61,6 +61,7 @@ int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoPartic
   while (atual != NULL){
     if (strcmp(atual->info.matricula, novoParticipante->info.matricula) == 0){
       printf("Participante já existe na lista\n");
+      free(novoParticipante);
       return 0;
     }
     if (atual->proximo == NULL){
