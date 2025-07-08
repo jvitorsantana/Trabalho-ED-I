@@ -105,6 +105,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
       case '4':
         nomeEvento = digitarNomeEvento();
         eventos = buscarEvento(*listaEventos, nomeEvento);
+        free(nomeEvento);
         if (eventos == NULL) {
           printf("ERRO: Evento nao encontrado!");
           pausarTerminal();
@@ -115,6 +116,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
       case '5':
         nomeEvento = digitarNomeEvento();
         eventos = buscarEvento(*listaEventos, nomeEvento);
+        free(nomeEvento);
         if (eventos == NULL) {
           printf("ERRO: Evento nao encontrado!");
           pausarTerminal();

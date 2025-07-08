@@ -28,7 +28,7 @@ void limparBuffer() {
 }
 
 char *digitarNomeEvento() {
-  char *nome = (char*) malloc(sizeof(char) * 100);
+  char *nome = (char*) malloc(sizeof(char) * 51);
   
   printf("Digite o nome do evento: ");
   scanf("%50[^\n]", nome);
@@ -38,7 +38,7 @@ char *digitarNomeEvento() {
 }
 
 char *digitarDataEvento() {
-  char *data = (char *)malloc(sizeof(char) * 10);
+  char *data = (char *)malloc(sizeof(char) * 11);
   if (data == NULL) {
     printf("Erro ao alocar na memoria");
     exit(1);
@@ -53,7 +53,7 @@ char *digitarDataEvento() {
 }
 
 char *digitarNomeAtividade() {
-  char *nome = (char *)malloc(sizeof(char) * 100);
+  char *nome = (char *)malloc(sizeof(char) * 51);
   if (nome == NULL) {
     printf("Erro ao alocar na memoria");
     exit(1);
@@ -83,7 +83,7 @@ char *digitarHorarioAtividade() {
 }
 
 char *digitarNomeParticipante() {
-  char *nome = (char *)malloc(sizeof(char) * 50);
+  char *nome = (char *)malloc(sizeof(char) * 51);
   if (nome == NULL) {
     printf("Erro ao alocar na memoria");
     exit(1);
@@ -98,7 +98,7 @@ char *digitarNomeParticipante() {
 }
 
 char *digitarEmailParticipante() {
-  char *email = (char *)malloc(sizeof(char) * 50);
+  char *email = (char *)malloc(sizeof(char) * 51);
   if (email == NULL) {
     printf("Erro ao alocar na memoria");
     exit(1);
@@ -113,7 +113,7 @@ char *digitarEmailParticipante() {
 }
 
 char *digitarMatriculaParticipante() {
-  char *matricula = (char *)malloc(sizeof(char) * 25);
+  char *matricula = (char *)malloc(sizeof(char) * 26);
   if (matricula == NULL) {
     printf("Erro ao alocar na memoria");
     exit(1);

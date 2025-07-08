@@ -253,12 +253,19 @@ ListaParticipante* ordernarListaParticipantesPeloNome(ListaParticipante* lista){
 void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
     ListaParticipante *copia = copiarListaParticipante(lista);
     ListaParticipante *resultado = ordernarListaParticipantesPeloNome(copia);
-    ListaParticipante *atual = resultado;
+    
     printf("\nParticipantes cadastrados:\n");
+    ListaParticipante *atual = resultado;
     while (atual != NULL) {
         printf("Nome: %s | Matricula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
         atual = atual->proximo;
     }
     printf("\n");
-    liberarListaParticipantes(&copia);
+
+    atual = resultado;
+    while (atual != NULL) {
+        ListaParticipante *temp = atual;
+        atual = atual->proximo;
+        free(temp);
+    }
 }

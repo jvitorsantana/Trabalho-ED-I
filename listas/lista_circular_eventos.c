@@ -233,5 +233,5 @@ void imprimirParticipantesEvento(Evento evento) {
         atual = atual->proximo;
     }
 
-    free(l);
+    liberarListaParticipantes(&listaOrdenada);
 }

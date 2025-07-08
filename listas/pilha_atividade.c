@@ -4,7 +4,6 @@
 
 #include "pilha_atividade.h"
 
-
 PilhaAtividade *inicializarPilhaAtividades() {
   PilhaAtividade *pilha = (PilhaAtividade *) malloc(sizeof(PilhaAtividade));
   if (pilha == NULL) {
@@ -39,6 +38,19 @@ int desempilharAtividade(PilhaAtividade *pilha, Atividade *destino) {
 }
 
 void liberarPilhaAtividades(PilhaAtividade *pilha) {
-  Atividade atv;
-  while (desempilharAtividade(pilha, &atv));
+  NoPilhaAtividade *atual = pilha->topo;
+  if (atual != NULL) {
+    while (atual != NULL) {
+      NoPilhaAtividade *temp = pilha->topo;
+      if (temp->info.participantes != NULL) {
+        liberarListaParticipantes(&temp->info.participantes);
+      }
+      if (temp->info.pilhaParticipantes != NULL) {
+        liberarPilhaParticipante(temp->info.pilhaParticipantes);
+      }
+      atual = temp->proximo;
+      free(temp);
+    }
+  }
+  free(pilha);
 }
