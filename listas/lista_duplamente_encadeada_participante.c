@@ -254,7 +254,7 @@ void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
     ListaParticipante *copia = copiarListaParticipante(lista);
     ListaParticipante *resultado = ordernarListaParticipantesPeloNome(copia);
     ListaParticipante *atual = resultado;
-    printf("\n=== Lista Participantes [A-Z] ===\n\n");
+    printf("\nParticipantes cadastrados:\n");
     while (atual != NULL) {
         printf("Nome: %s | Matricula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
         atual = atual->proximo;

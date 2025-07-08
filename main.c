@@ -34,6 +34,7 @@ void menuPrincipal(ListaEventos **listaEventos) {
     printf("➜ ");
 
     scanf(" %c", &opcao);
+    limparTerminal();
     limparBuffer();
 
     switch(opcao) {
@@ -69,6 +70,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
     printf("➜ ");
 
     scanf(" %c", &opcaoAdmin);
+    limparTerminal();
     limparBuffer();
 
     switch(opcaoAdmin) {
@@ -152,6 +154,7 @@ void menuEditarEvento(Evento *e) {
     printf("➜ ");
 
     scanf(" %c", &opcaoMenuEditarEvento);
+    limparTerminal();
     limparBuffer();
 
     switch(opcaoMenuEditarEvento) {
@@ -221,6 +224,7 @@ void menuVerAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) {
     printf("➜ ");
 
     scanf(" %c", &opcaoMenuVerAtividade);
+    limparTerminal();
     limparBuffer();
 
     switch(opcaoMenuVerAtividade) {
@@ -251,6 +255,7 @@ void menuParticipantesAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) 
     printf("➜ ");
 
     scanf(" %c", &opcaoMenuParticipantesAtividade);
+    limparTerminal();
     limparBuffer();
 
     switch(opcaoMenuParticipantesAtividade) {

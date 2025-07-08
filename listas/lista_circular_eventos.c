@@ -92,7 +92,7 @@ ListaEventos* removerEvento(ListaEventos *lista, const char *nome){
     ListaEventos *atual = lista->prox;
     ListaEventos *anterior = lista;
     do{
-        if(strcmp(atual->info.nome, nome)==0){
+        if(strcasecmp(atual->info.nome, nome)==0){
             removerAux(&lista, anterior, atual);
             printf("Evento removido com sucesso!");
             return lista;
