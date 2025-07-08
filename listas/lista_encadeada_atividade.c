@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "lista_encadeada_atividade.h"
 #include "lista_duplamente_encadeada_participante.h"
 #include "pilha_atividade.h"
 
+// Desfaz a última remoção de uma atividade, restaurando da pilha para a lista.
 int desfazerRemocaoAtividade(ListaAtividade **lista, PilhaAtividade *pilha){
   if(pilha->topo == NULL){
     printf("Pilha vazia\n");
@@ -38,10 +40,12 @@ int desfazerRemocaoAtividade(ListaAtividade **lista, PilhaAtividade *pilha){
   return 1;
 }
 
+// Inicializa a lista de atividades como vazia (NULL).
 ListaAtividade *inicializar(){
   return NULL;
 }
 
+// Insere uma nova atividade na lista, caso o título ainda não exista.
 ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *horario) {
     ListaAtividade *busca = buscarAtividade(lista, titulo);
     if (busca != NULL) {
@@ -64,7 +68,7 @@ ListaAtividade *inserirAtividade(ListaAtividade *lista, char *titulo, char *hora
     return nova;
 }
       
-
+// Remove uma atividade da lista e empilha para possível desfazer.
 ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo, PilhaAtividade *pilhaDesfazerAtividade) {
   if (!pilhaDesfazerAtividade) {
     printf("Pilha de desfazer não inicializada!\n");
@@ -101,6 +105,7 @@ ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo, PilhaAtivi
   return lista;
 }
 
+// Libera toda a memória da lista de atividades, incluindo subestruturas.
 void liberarAtividades(ListaAtividade *lista) {
   ListaAtividade *atual = lista;
   while (atual != NULL) {
@@ -117,10 +122,11 @@ void liberarAtividades(ListaAtividade *lista) {
   }
 }
 
+// Busca uma atividade pelo título na lista. Retorna ponteiro ou NULL.
 ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo) {
   ListaAtividade *atual = lista;
   while (atual != NULL) {
-    if (strcmp(atual->info.titulo, titulo) == 0) {
+    if (strcasecmp(atual->info.titulo, titulo) == 0) {
       return atual;
     }
     atual = atual->prox;
@@ -128,6 +134,7 @@ ListaAtividade *buscarAtividade(ListaAtividade *lista, char *titulo) {
   return NULL; // Atividade não encontrada
 }
 
+// Ordena a lista de atividades com base no horário (bubble sort).
 ListaAtividade *ordenarListaAtividadesPorHorario(ListaAtividade * lista) {
   if (lista == NULL || lista->prox == NULL)
     return lista; // já está ordenada
@@ -166,6 +173,7 @@ ListaAtividade *ordenarListaAtividadesPorHorario(ListaAtividade * lista) {
   return lista;
 }
 
+// Cria uma cópia da lista de atividades (sem duplicar participantes).
 ListaAtividade* copiarListaAtividade(ListaAtividade* lista) {
     if (lista == NULL) return NULL;
 
@@ -194,6 +202,7 @@ ListaAtividade* copiarListaAtividade(ListaAtividade* lista) {
     return copia;
 }
 
+// Exibe todas as atividades ordenadas por horário (com título e horário).
 void exibirAtividades(ListaAtividade *lista){
   ListaAtividade *copia = copiarListaAtividade(lista);
   ListaAtividade *resultado = ordenarListaAtividadesPorHorario(copia);
@@ -218,6 +227,7 @@ void exibirAtividades(ListaAtividade *lista){
   }
 }
 
+// Exibe apenas os nomes das atividades, ordenadas por horário.
 void exibirNomeAtividades(ListaAtividade *lista) {
   ListaAtividade *copia = copiarListaAtividade(lista);
   ListaAtividade *resultado = ordenarListaAtividadesPorHorario(copia);
