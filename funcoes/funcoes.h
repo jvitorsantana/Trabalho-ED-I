@@ -1,6 +1,7 @@
 #ifndef FUNCOES_H
 #define FUNCOES_H
 
+// Protótipos das funções auxiliares
 void limparTerminal();
 void pausarTerminal();
 void limparBuffer();
