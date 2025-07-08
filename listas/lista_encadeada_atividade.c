@@ -74,7 +74,7 @@ ListaAtividade *removerAtividade(ListaAtividade *lista, char *titulo, PilhaAtivi
   ListaAtividade *anterior = NULL;
   
   while(atual != NULL){
-    if(strcmp(atual->info.titulo, titulo) == 0){
+    if(strcasecmp(atual->info.titulo, titulo) == 0){
       break;
     }
     anterior = atual;

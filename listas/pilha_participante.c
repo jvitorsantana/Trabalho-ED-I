@@ -4,6 +4,7 @@
 #include "pilha_participante.h"
 
 
+// Inicializa uma nova pilha de participantes, com topo igual a NULL.
 PilhaParticipante *inicializarPilhaParticipantes(){
     PilhaParticipante *p = (PilhaParticipante *)malloc(sizeof(PilhaParticipante));
     if (p == NULL) {
@@ -14,6 +15,7 @@ PilhaParticipante *inicializarPilhaParticipantes(){
     return p;
 }
 
+// Empilha um novo participante no topo da pilha.
 int empilharParticipante(PilhaParticipante* pilha, Participante participante){
     NoParticipante* novoParticipante = (NoParticipante*)malloc(sizeof(NoParticipante));
     if(novoParticipante == NULL){
@@ -26,6 +28,7 @@ int empilharParticipante(PilhaParticipante* pilha, Participante participante){
     return 1;
 }
 
+// Desempilha o participante do topo e armazena seus dados no destino.
 int desempilharParticipante(PilhaParticipante* pilha, Participante* destino){
     if(pilha->topo == NULL){
         // printf("Pilha vazia\n");
@@ -38,6 +41,7 @@ int desempilharParticipante(PilhaParticipante* pilha, Participante* destino){
     return 1;
 }
 
+// Libera toda a memória alocada para a pilha e seus elementos.
 void liberarPilhaParticipante(PilhaParticipante* pilha){
     Participante p;
     while(desempilharParticipante(pilha, &p));

@@ -181,8 +181,8 @@ void menuEditarEvento(Evento *e) {
       case '3':
         char *nome_remover = digitarNomeAtividade();
         e->atividades = removerAtividade(e->atividades, nome_remover, e->pilhaAtividades);
-        free(nome_remover);
         pausarTerminal();
+        free(nome_remover);
         break;
       case '4':
         char *atividade = digitarNomeAtividade();
