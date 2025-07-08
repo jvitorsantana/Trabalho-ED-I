@@ -153,6 +153,16 @@ void liberarListaCircularEventos(ListaEventos *lista) {
         free(a_remover);
     }
 
+    if (auxiliar->info.atividades != NULL) {
+        liberarAtividades(auxiliar->info.atividades);
+    }
+    if (auxiliar->info.pilhaAtividades != NULL) {
+        liberarPilhaAtividades(auxiliar->info.pilhaAtividades);
+    }
+    if (auxiliar->info.filaCheckIn != NULL) {
+        liberarFila(auxiliar->info.filaCheckIn);
+    }
+
     free(lista);
 }
 
