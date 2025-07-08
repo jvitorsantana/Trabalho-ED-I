@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct Participante {
+typedef struct Participante { // Estrutura que representa um participante.
   char matricula[26];
   char nome[51];
   char email[51];

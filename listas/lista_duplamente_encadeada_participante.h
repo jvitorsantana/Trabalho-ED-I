@@ -6,12 +6,13 @@
 #define LISTA_DUPLAMENTE_ENCADEADA_PARTICIPANTE_H
 
 
-typedef struct ListaParticipante {
-  Participante info;
+typedef struct ListaParticipante { // Lista duplamente encadeada de participantes
+  Participante info; // Estrutura do participante.
   struct ListaParticipante *anterior;
   struct ListaParticipante *proximo;
 } ListaParticipante;
 
+// Protótipos das funções para manipulação da lista de participantes.
 ListaParticipante *inicializarListaParticipantes();
 ListaParticipante *criarParticipante(char matricula[], char nome[], char email[]);
 int existeParticipante(ListaParticipante *lista, char matriculaParticipante[]);
@@ -22,4 +23,4 @@ int desfazerRemocaoParticipante(ListaParticipante **lista, PilhaParticipante *pi
 ListaParticipante *ordernarListaParticipantesPeloNome(ListaParticipante *lista);
 void imprimirListaParticipantesOrdenada(ListaParticipante *lista);
 
-#endif
+#endif 

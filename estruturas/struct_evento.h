@@ -4,7 +4,7 @@
 #ifndef STRUCT_EVENTO_H
 #define STRUCT_EVENTO_H
 
-typedef struct Evento {
+typedef struct Evento { // Estrutura que representa um evento.
   char nome[51];
   char data[11];
   ListaAtividade *atividades;
