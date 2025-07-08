@@ -30,9 +30,19 @@ void limparBuffer() {
 char *digitarNomeEvento() {
   char *nome = (char*) malloc(sizeof(char) * 51);
   
-  printf("Digite o nome do evento: ");
-  scanf("%50[^\n]", nome);
-  limparBuffer();
+  while(1) {
+    printf("Digite o nome do evento: ");
+    scanf(" %50[^\n]", nome);
+    limparBuffer();
+
+    if (strlen(nome) < 3) {
+      printf("ERRO: Preencha o campo corretamente");
+      pausarTerminal();
+      limparTerminal();
+    } else {
+      break;
+    }
+  }
 
   return nome;
 }
@@ -46,7 +56,7 @@ char *digitarDataEvento() {
   }
 
   printf("Digite a data do evento: ");
-  scanf("%10s", data);
+  scanf(" %10s", data);
   limparBuffer();
 
   return data;
@@ -60,9 +70,18 @@ char *digitarNomeAtividade() {
     return NULL;
   }
 
-  printf("Digite o nome da atividade: ");
-  scanf("%50[^\n]", nome);
-  limparBuffer();
+  while(1) {
+    printf("Digite o nome da atividade: ");
+    scanf(" %50[^\n]", nome);
+    limparBuffer();
+    if (strlen(nome) < 3) {
+      printf("ERRO: Preencha o campo corretamente");
+      pausarTerminal();
+      limparTerminal();
+    } else {
+      break;
+    }
+  }
 
   return nome;
 }
@@ -76,7 +95,7 @@ char *digitarHorarioAtividade() {
   }
 
   printf("Digite o horario da atividade: ");
-  scanf("%9[^\n]", horario);
+  scanf(" %9s", horario);
   limparBuffer();
 
   return horario;
@@ -90,10 +109,19 @@ char *digitarNomeParticipante() {
     return NULL;
   }
 
-  printf("Digite o nome do participante: ");
-  scanf("%50[^\n]", nome);
-  limparBuffer();
+  while(1) {
+    printf("Digite o nome do participante: ");
+    scanf(" %50[^\n]", nome);
+    limparBuffer();
 
+    if (strlen(nome) < 3) {
+      printf("ERRO: Preencha o campo corretamente");
+      pausarTerminal();
+      limparTerminal();
+    } else {
+      break;
+    }
+  }
   return nome;
 }
 
@@ -105,9 +133,19 @@ char *digitarEmailParticipante() {
     return NULL;
   }
 
-  printf("Digite o e-mail do participante: ");
-  scanf("%50[^\n]", email);
-  limparBuffer();
+  while(1) {
+    printf("Digite o email do participante: ");
+    scanf(" %50[^\n]", email);
+    limparBuffer();
+    
+    if (strlen(email) < 6) {
+      printf("ERRO: Preencha o campo corretamente");
+      pausarTerminal();
+      limparTerminal();
+    } else {
+      break;
+    }
+  }
 
   return email;
 }
@@ -121,7 +159,7 @@ char *digitarMatriculaParticipante() {
   }
 
   printf("Digite a matricula do participante: ");
-  scanf("%25[^\n]", matricula);
+  scanf(" %25s", matricula);
   limparBuffer();
 
   return matricula;
