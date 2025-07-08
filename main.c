@@ -105,13 +105,14 @@ void menuAdministracao(ListaEventos **listaEventos) {
       case '4':
         nomeEvento = digitarNomeEvento();
         eventos = buscarEvento(*listaEventos, nomeEvento);
-        free(nomeEvento);
         if (eventos == NULL) {
           printf("ERRO: Evento nao encontrado!");
           pausarTerminal();
         } else {
           menuEditarEvento(&eventos->info); // OU &((*eventos).info)
         }
+        // pausarTerminal();
+        free(nomeEvento);
         break;
       case '5':
         nomeEvento = digitarNomeEvento();
