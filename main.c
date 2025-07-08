@@ -26,7 +26,7 @@ void menuPrincipal(ListaEventos **listaEventos) {
   while (opcao != '0') {
     limparTerminal();
 
-    printf("Seja bem-vindo ao Sistema PicaDuraMole Gerenciador de Eventos\n");
+    printf("Seja bem-vindo ao Sistema Gerenciador de Eventos\n");
     printf("Escolha uma das opcoes abaixo:\n");
     printf("1 » Administracao\n");
     printf("2 » Realizar Check-In\n");
