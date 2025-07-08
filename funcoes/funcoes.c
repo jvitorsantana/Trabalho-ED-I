@@ -73,9 +73,9 @@ char *digitarNomeAtividade() {
   while(1) {
     printf("Digite o nome da atividade: ");
     scanf(" %50[^\n]", nome);
+    limparBuffer();
     if (strlen(nome) < 3) {
       printf("ERRO: Preencha o campo corretamente");
-      limparBuffer();
       pausarTerminal();
       limparTerminal();
     } else {
@@ -112,9 +112,10 @@ char *digitarNomeParticipante() {
   while(1) {
     printf("Digite o nome do participante: ");
     scanf(" %50[^\n]", nome);
+    limparBuffer();
+
     if (strlen(nome) < 3) {
       printf("ERRO: Preencha o campo corretamente");
-      limparBuffer();
       pausarTerminal();
       limparTerminal();
     } else {
@@ -135,9 +136,10 @@ char *digitarEmailParticipante() {
   while(1) {
     printf("Digite o email do participante: ");
     scanf(" %50[^\n]", email);
+    limparBuffer();
+    
     if (strlen(email) < 6) {
       printf("ERRO: Preencha o campo corretamente");
-      limparBuffer();
       pausarTerminal();
       limparTerminal();
     } else {

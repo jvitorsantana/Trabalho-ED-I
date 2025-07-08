@@ -4,6 +4,7 @@
 
 #include "pilha_atividade.h"
 
+// Inicializa uma nova pilha de atividades, com topo igual a NULL.
 PilhaAtividade *inicializarPilhaAtividades() {
   PilhaAtividade *pilha = (PilhaAtividade *) malloc(sizeof(PilhaAtividade));
   if (pilha == NULL) {
