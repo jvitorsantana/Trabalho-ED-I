@@ -165,11 +165,7 @@ void liberarListaCircularEventos(ListaEventos *lista) {
     free(lista);
 }
 
-<<<<<<< HEAD
-ListaEventos* buscar_evento(ListaEventos *lista, char nome[]) {
-=======
 ListaEventos* buscarEvento(ListaEventos *lista, char nome[]) {
->>>>>>> main
     if (lista == NULL){
         return NULL;
     }
