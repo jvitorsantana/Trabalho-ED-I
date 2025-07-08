@@ -1,8 +1,11 @@
+// Inclusão das bibliotecas
 #include "fila_check_in.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+
+// Inicializa uma nova fila alocando dinamicamente
 FilaCheckIn *criarFila() {
   FilaCheckIn *fila = (FilaCheckIn *) malloc(sizeof(FilaCheckIn));
   fila->inicio = NULL;
@@ -11,6 +14,8 @@ FilaCheckIn *criarFila() {
   return fila;
 }
 
+
+// Libera a fila alocada dinamicamente
 void liberarFila(FilaCheckIn *fila) {
   NoFilaCheckIn *atual = fila->inicio;
   while (atual != NULL) {
@@ -21,6 +26,8 @@ void liberarFila(FilaCheckIn *fila) {
   free(fila);
 }
 
+
+// Insere na fila
 void inserirFila(FilaCheckIn *fila, char matriculaParticipante[]) {
   NoFilaCheckIn *novo_no = (NoFilaCheckIn *)malloc(sizeof(NoFilaCheckIn));
 
@@ -37,10 +44,14 @@ void inserirFila(FilaCheckIn *fila, char matriculaParticipante[]) {
   fila->fim = novo_no;
 }
 
+
+// Verificar se a fila está vazia
 int filaVazia(FilaCheckIn *fila) {
   return fila->fim == NULL;
 }
 
+
+// Verificar se determinado nó existe na fila
 int existeNaFila(FilaCheckIn *fila, char matriculaParticipante[]) {
   int existe = 0;
 
@@ -60,6 +71,8 @@ int existeNaFila(FilaCheckIn *fila, char matriculaParticipante[]) {
   return existe;
 }
 
+
+// Gera a posição do nó na fila
 int posicaoNaFila(FilaCheckIn *fila, char matriculaParticipante[]) {
   int posicao = 1;
 
@@ -81,6 +94,8 @@ int posicaoNaFila(FilaCheckIn *fila, char matriculaParticipante[]) {
   return posicao;
 }
 
+
+// Imprime os elementos da fila
 void imprimirFila(FilaCheckIn *fila) {
   if (filaVazia(fila)) {
     printf("Ninguem fez o check-in ainda");
@@ -96,6 +111,8 @@ void imprimirFila(FilaCheckIn *fila) {
   printf("\n");
 }
 
+
+// Remove um elemento da fila (Caso o participante seja removido e já tenha realizado check-in)
 int removerFila(FilaCheckIn* fila, char matriculaParticipante[]){
   if (fila == NULL || fila->inicio == NULL){
     return 0; 

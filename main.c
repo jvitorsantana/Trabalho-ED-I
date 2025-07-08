@@ -1,3 +1,4 @@
+// Inclusão das bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,6 +9,7 @@
 #include "listas/lista_encadeada_atividade.h"
 #include "listas/fila_check_in.h"
 
+// Protótipos das funções utilizadas no arquivo
 void menuParticipantesAtividade(Atividade *atividade, FilaCheckIn* fila);
 void menuVerAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn);
 void menuEditarEvento(Evento *e);
@@ -15,12 +17,18 @@ void menuAdministracao(ListaEventos **listaEventos);
 void menuCheckIn(ListaEventos *listaEventos);
 void menuPrincipal(ListaEventos **listaEventos);
 
+// função principal
 int main() {
+
+  // Inicializa uma lista de eventos
   ListaEventos *listaEventos = inicializarListaEventos();
+
+  // Chama o menu principal
   menuPrincipal(&listaEventos);
   return 0;
 }
 
+// Menu principal
 void menuPrincipal(ListaEventos **listaEventos) {
   char opcao = '\0';
   while (opcao != '0') {
@@ -56,6 +64,7 @@ void menuPrincipal(ListaEventos **listaEventos) {
   }
 }
 
+// Menu de gerenciamento de eventos
 void menuAdministracao(ListaEventos **listaEventos) {
   char opcaoAdmin = '\0';
   while (opcaoAdmin != '0') {
@@ -143,6 +152,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
   }
 }
 
+// Menu de edição de atividades
 void menuEditarEvento(Evento *e) {
   char opcaoMenuEditarEvento = '\0';
   while (opcaoMenuEditarEvento != '0') {
@@ -215,6 +225,7 @@ void menuEditarEvento(Evento *e) {
   }
 }
 
+// Menu intermediário de participantes
 void menuVerAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) {
   char opcaoMenuVerAtividade = '\0';
   while (opcaoMenuVerAtividade != '0') {
@@ -244,6 +255,8 @@ void menuVerAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) {
   }
 }
 
+
+// Menu de manipulação de participantes
 void menuParticipantesAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) {
   char opcaoMenuParticipantesAtividade = '\0';
   while (opcaoMenuParticipantesAtividade != '0') {
@@ -315,6 +328,7 @@ void menuParticipantesAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) 
   }
 }
 
+// Realizar check-in
 void menuCheckIn(ListaEventos *listaEventos) {
   limparTerminal();
 

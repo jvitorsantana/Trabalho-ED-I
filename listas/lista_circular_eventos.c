@@ -1,3 +1,4 @@
+// Inclusão das bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,10 +9,13 @@
 #include "lista_duplamente_encadeada_participante.h"
 #include "pilha_atividade.h"
 
+
+// Criar lista circular
 ListaEventos* inicializarListaEventos(){
     return NULL;
 }
 
+// Inserir Evento na lista
 ListaEventos* inserirEvento(ListaEventos *lista, char nome[], char data[]){
     ListaEventos *busca = buscarEvento(lista, nome);
     if(busca != NULL){
@@ -48,6 +52,7 @@ ListaEventos* inserirEvento(ListaEventos *lista, char nome[], char data[]){
     return novo_evento;
 }
 
+// Função auxiliar para remover um nó específico da lista circular de eventos
 void removerAux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atual){
     if (atual->info.atividades != NULL) {
         liberarAtividades(atual->info.atividades);
@@ -63,10 +68,11 @@ void removerAux(ListaEventos **lista, ListaEventos *anterior, ListaEventos *atua
     if(atual == *lista){
         *lista = anterior;
     }
+    
     free(atual);
 }
 
-
+// Remove um evento da lista circular com base no nome
 ListaEventos* removerEvento(ListaEventos *lista, const char *nome){
     if(!lista){
         printf("ERRO: Nao foi cadastrado nenhum evento!");
@@ -103,7 +109,7 @@ ListaEventos* removerEvento(ListaEventos *lista, const char *nome){
     return lista;
 }
 
-
+// Imprime os nomes e datas de todos os eventos da lista circular
 void imprimirEventos(ListaEventos *lista){
     if(lista == NULL){
         return;
@@ -115,6 +121,7 @@ void imprimirEventos(ListaEventos *lista){
     }while(atual != lista->prox);
 }
 
+// Libera toda a memória da lista circular de eventos e suas estruturas internas
 void liberarListaCircularEventos(ListaEventos *lista) {
     if (lista == NULL) {
         return;
@@ -165,6 +172,7 @@ void liberarListaCircularEventos(ListaEventos *lista) {
     free(lista);
 }
 
+// Busca um evento na lista circular pelo nome (ignora maiúsculas/minúsculas)
 ListaEventos* buscarEvento(ListaEventos *lista, char nome[]) {
     if (lista == NULL){
         return NULL;
@@ -180,6 +188,7 @@ ListaEventos* buscarEvento(ListaEventos *lista, char nome[]) {
   return NULL;
 }
 
+// Verifica se um participante está cadastrado em alguma atividade do evento
 int participanteCadastradoNoEvento(Evento *evento, char matriculaParticipante[]) {
     int existe = 0;
     ListaAtividade *atividades = evento->atividades;
@@ -194,6 +203,7 @@ int participanteCadastradoNoEvento(Evento *evento, char matriculaParticipante[])
     return existe;
 }
 
+// Realiza o check-in de um participante no evento, caso ainda não tenha feito
 void realizarCheckIn(Evento *evento, char matriculaParticipante[]) {
     int existe = existeNaFila(evento->filaCheckIn, matriculaParticipante);
     if (existe) {
@@ -213,6 +223,7 @@ void realizarCheckIn(Evento *evento, char matriculaParticipante[]) {
     printf("\nCheck-In realizado com sucesso!\nVoce esta na posicao: %d", posicao);
 }
 
+// Imprime todos os participantes únicos cadastrados em atividades do evento, em ordem alfabética
 void imprimirParticipantesEvento(Evento evento) {
     ListaParticipante *l = inicializarListaParticipantes();
     ListaAtividade *atv = evento.atividades;

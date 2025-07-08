@@ -1,16 +1,19 @@
 #ifndef FILA_CHECK_IN_H
 #define FILA_CHECK_IN_H
 
+// Estrutura do nó da fila
 typedef struct NoFilaCheckIn {
   char matriculaParticipante[26];
   struct NoFilaCheckIn *proximo;
 } NoFilaCheckIn;
 
+// Estrutura da fila
 typedef struct FilaCheckIn {
   NoFilaCheckIn *inicio;
   NoFilaCheckIn *fim;
 } FilaCheckIn;
 
+// Protótipos das funções vinculadas a manipulação da fila
 FilaCheckIn *criarFila();
 void liberarFila(FilaCheckIn *fila);
 int filaVazia(FilaCheckIn *fila);
