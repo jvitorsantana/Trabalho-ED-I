@@ -95,3 +95,33 @@ void imprimirFila(FilaCheckIn *fila) {
   }
   printf("\n");
 }
+
+int removerFila(FilaCheckIn* fila, char matriculaParticipante[]){
+  if (fila == NULL || fila->inicio == NULL){
+    return 0; 
+  }
+  
+  NoFilaCheckIn* atual = fila->inicio;
+  NoFilaCheckIn* anterior = NULL;
+
+  while (atual != NULL){
+    if (strcasecmp(atual->matriculaParticipante, matriculaParticipante) == 0){
+      if (anterior == NULL){
+        fila->inicio = atual->proximo;
+        if (fila->fim == atual){
+          fila->fim = NULL;
+        }
+      } else{
+        anterior->proximo = atual->proximo;
+        if (fila->fim == atual){
+          fila->fim = anterior;
+        }
+      }
+      free(atual);
+      return 1;
+    }
+    anterior = atual;
+    atual = atual->proximo;
+  }
+  return 0;
+}

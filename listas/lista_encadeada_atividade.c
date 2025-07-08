@@ -3,7 +3,7 @@
 #include <string.h>
 #include "lista_encadeada_atividade.h"
 #include "lista_duplamente_encadeada_participante.h"
-#include "pilha_atividade.c"
+#include "pilha_atividade.h"
 
 int desfazerRemocaoAtividade(ListaAtividade **lista, PilhaAtividade *pilha){
   if(pilha->topo == NULL){
@@ -197,31 +197,45 @@ ListaAtividade* copiarListaAtividade(ListaAtividade* lista) {
 void exibirAtividades(ListaAtividade *lista){
   ListaAtividade *copia = copiarListaAtividade(lista);
   ListaAtividade *resultado = ordenarListaAtividadesPorHorario(copia);
-  ListaAtividade *atual = resultado;
-  if(atual == NULL){
+
+  if(resultado == NULL){
     printf("Nenhuma atividade cadastrada.\n");
     return;
   }
+
+  ListaAtividade *atual = resultado;
   printf("Atividades cadastradas: \n");
   while (atual != NULL){
     printf("Título: %s, Horário: %s\n", atual->info.titulo, atual->info.horario);
     atual = atual->prox;
   }
-  free(copia);
+  
+  atual = resultado;
+  while (atual != NULL) {
+    ListaAtividade *temp = atual;
+    atual = atual->prox;
+    free(temp);
+  }
 }
 
 void exibirNomeAtividades(ListaAtividade *lista) {
   ListaAtividade *copia = copiarListaAtividade(lista);
   ListaAtividade *resultado = ordenarListaAtividadesPorHorario(copia);
-  ListaAtividade *atual = resultado;
-  if(atual == NULL){
+  if(resultado == NULL){
     printf("Nenhuma atividade cadastrada.\n");
     return;
   }
 
+  ListaAtividade *atual = resultado;
   while (atual != NULL){
     printf("- %s | Horario: %s\n", atual->info.titulo, atual->info.horario);
     atual = atual->prox;
   }
-  free(copia);
+
+  atual = resultado;
+  while (atual != NULL) {
+    ListaAtividade *temp = atual;
+    atual = atual->prox;
+    free(temp);
+  }
 }

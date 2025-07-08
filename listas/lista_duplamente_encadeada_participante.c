@@ -1,52 +1,11 @@
-#include "../estruturas/struct_participante.h"
-#include "lista_duplamente_encadeada_participante.h"
-// #include "pilha_participante.h"
-#include "pilha_participante.c"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Manipulação de pilha
-
-// PilhaParticipante *inicializarPilhaParticipantes(){
-//     PilhaParticipante *p = (PilhaParticipante *)malloc(sizeof(PilhaParticipante));
-//     if (p == NULL) {
-//         printf("Erro ao alocar memória para a pilha de participantes.\n");
-//         exit(1);
-//     }
-//     p->topo = NULL;
-//     return p;
-// }
-
-// int empilharParticipante(PilhaParticipante* pilha, Participante participante){
-//     NoParticipante* novoParticipante = (NoParticipante*)malloc(sizeof(NoParticipante));
-//     if(novoParticipante == NULL){
-//         printf("Erro ao criar participante\n");
-//         return 0;
-//     }
-//     novoParticipante->info = participante;
-//     novoParticipante->proximo = pilha->topo;
-//     pilha->topo = novoParticipante;
-//     return 1;
-// }
-
-// int desempilharParticipante(PilhaParticipante* pilha, Participante* destino){
-//     if(pilha->topo == NULL){
-//         // printf("Pilha vazia\n");
-//         return 0;
-//     }
-//     NoParticipante* temp = pilha->topo;
-//     *destino = temp->info; 
-//     pilha->topo = temp->proximo;
-//     free(temp);
-//     return 1;
-// }
-
-// void liberarPilhaParticipante(PilhaParticipante* pilha){
-//     Participante p;
-//     while(desempilharParticipante(pilha, &p));
-// }
-
+#include "../estruturas/struct_participante.h"
+#include "lista_duplamente_encadeada_participante.h"
+#include "pilha_participante.h"
+#include "fila_check_in.h"
 
 // Manipulação de participantes na lista duplamente encadeada
 
@@ -94,14 +53,6 @@ int existeParticipante(ListaParticipante *lista, char matriculaParticipante[]) {
 int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoParticipante){
   if (*lista == NULL){
     *lista = novoParticipante;
-    printf("Participante inserido com sucesso!\n");
-
-    // printf("Participante inserido:\n");
-    // printf("Matrícula: %s\n", novoParticipante->info.matricula);
-    // printf("Nome: %s\n", novoParticipante->info.nome);
-    // printf("Email: %s\n\n", novoParticipante->info.email);
-
-
     return 1;
   }
 
@@ -122,13 +73,6 @@ int inserirParticipante(ListaParticipante** lista, ListaParticipante* novoPartic
   novoParticipante->anterior = atual;
   novoParticipante->proximo = NULL;
 
-//   printf("Participante inserido:\n");
-//   printf("Matrícula: %s\n", novoParticipante->info.matricula);
-//   printf("Nome: %s\n", novoParticipante->info.nome);
-//   printf("Email: %s\n\n", novoParticipante->info.email);
-
-  printf("Participante inserido com sucesso!\n");
-
   return 1;
 }
 
@@ -142,7 +86,7 @@ void liberarListaParticipantes(ListaParticipante** lista){
     *lista = NULL;
 }
 
-int removerParticipante(ListaParticipante** lista, char matricula[], PilhaParticipante* pilha){
+int removerParticipante(ListaParticipante** lista, char matricula[], PilhaParticipante* pilha, FilaCheckIn** fila) {
     if (*lista == NULL){
         printf("Não há participantes para serem removidos!\n");
         return 0;
@@ -178,7 +122,12 @@ int removerParticipante(ListaParticipante** lista, char matricula[], PilhaPartic
         printf("Não foi possível remover o participante! (pilha não suporta)\n");
         return 0;
     }
+
+    if (existeNaFila(*fila, matricula)){
+        removerFila(*fila, matricula);
+    }
     
+
     free(atual);
 
     printf("Participante removido com sucesso!\n");
@@ -304,12 +253,19 @@ ListaParticipante* ordernarListaParticipantesPeloNome(ListaParticipante* lista){
 void imprimirListaParticipantesOrdenada(ListaParticipante *lista) {
     ListaParticipante *copia = copiarListaParticipante(lista);
     ListaParticipante *resultado = ordernarListaParticipantesPeloNome(copia);
+    
+    printf("\nParticipantes cadastrados:\n");
     ListaParticipante *atual = resultado;
-    printf("\n=== Lista Participantes [A-Z] ===\n\n");
     while (atual != NULL) {
         printf("Nome: %s | Matricula: %s | E-mail: %s\n", atual->info.nome, atual->info.matricula, atual->info.email);
         atual = atual->proximo;
     }
     printf("\n");
-    liberarListaParticipantes(&copia);
+
+    atual = resultado;
+    while (atual != NULL) {
+        ListaParticipante *temp = atual;
+        atual = atual->proximo;
+        free(temp);
+    }
 }

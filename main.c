@@ -8,8 +8,8 @@
 #include "listas/lista_encadeada_atividade.h"
 #include "listas/fila_check_in.h"
 
-void menuParticipantesAtividade(Atividade *atividade);
-void menuVerAtividade(Atividade *atividade);
+void menuParticipantesAtividade(Atividade *atividade, FilaCheckIn* fila);
+void menuVerAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn);
 void menuEditarEvento(Evento *e);
 void menuAdministracao(ListaEventos **listaEventos);
 void menuCheckIn(ListaEventos *listaEventos);
@@ -26,7 +26,7 @@ void menuPrincipal(ListaEventos **listaEventos) {
   while (opcao != '0') {
     limparTerminal();
 
-    printf("Seja bem-vindo ao Sistema PicaDuraMole Gerenciador de Eventos\n");
+    printf("Seja bem-vindo ao Sistema Gerenciador de Eventos\n");
     printf("Escolha uma das opcoes abaixo:\n");
     printf("1 » Administracao\n");
     printf("2 » Realizar Check-In\n");
@@ -34,6 +34,7 @@ void menuPrincipal(ListaEventos **listaEventos) {
     printf("➜ ");
 
     scanf(" %c", &opcao);
+    limparTerminal();
     limparBuffer();
 
     switch(opcao) {
@@ -69,6 +70,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
     printf("➜ ");
 
     scanf(" %c", &opcaoAdmin);
+    limparTerminal();
     limparBuffer();
 
     switch(opcaoAdmin) {
@@ -103,6 +105,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
       case '4':
         nomeEvento = digitarNomeEvento();
         eventos = buscarEvento(*listaEventos, nomeEvento);
+        free(nomeEvento);
         if (eventos == NULL) {
           printf("ERRO: Evento nao encontrado!");
           pausarTerminal();
@@ -113,6 +116,7 @@ void menuAdministracao(ListaEventos **listaEventos) {
       case '5':
         nomeEvento = digitarNomeEvento();
         eventos = buscarEvento(*listaEventos, nomeEvento);
+        free(nomeEvento);
         if (eventos == NULL) {
           printf("ERRO: Evento nao encontrado!");
           pausarTerminal();
@@ -152,6 +156,7 @@ void menuEditarEvento(Evento *e) {
     printf("➜ ");
 
     scanf(" %c", &opcaoMenuEditarEvento);
+    limparTerminal();
     limparBuffer();
 
     switch(opcaoMenuEditarEvento) {
@@ -160,7 +165,6 @@ void menuEditarEvento(Evento *e) {
         char *horario_atividade = digitarHorarioAtividade();
         if (!validarHorario(horario_atividade)) {
           printf("ERRO: Voce digitou o horario no formato invalido!\nUse: HH:mm");
-          pausarTerminal();
         } else {
           e->atividades = inserirAtividade(e->atividades, nome_atividade, horario_atividade);
         }
@@ -186,7 +190,7 @@ void menuEditarEvento(Evento *e) {
           printf("ERRO: Atividade '%s' nao encontrada!\n", atividade);
           pausarTerminal();
         } else {
-          menuVerAtividade(&atividades->info);
+          menuVerAtividade(&atividades->info, e->filaCheckIn);
         }
         free(atividade);
         break;
@@ -210,7 +214,7 @@ void menuEditarEvento(Evento *e) {
   }
 }
 
-void menuVerAtividade(Atividade *atividade) {
+void menuVerAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) {
   char opcaoMenuVerAtividade = '\0';
   while (opcaoMenuVerAtividade != '0') {
     limparTerminal();
@@ -222,11 +226,12 @@ void menuVerAtividade(Atividade *atividade) {
     printf("➜ ");
 
     scanf(" %c", &opcaoMenuVerAtividade);
+    limparTerminal();
     limparBuffer();
 
     switch(opcaoMenuVerAtividade) {
       case '1':
-        menuParticipantesAtividade(atividade);
+        menuParticipantesAtividade(atividade, filaCheckIn);
         break;
       case '0':
         break;
@@ -238,7 +243,7 @@ void menuVerAtividade(Atividade *atividade) {
   }
 }
 
-void menuParticipantesAtividade(Atividade *atividade) {
+void menuParticipantesAtividade(Atividade *atividade, FilaCheckIn* filaCheckIn) {
   char opcaoMenuParticipantesAtividade = '\0';
   while (opcaoMenuParticipantesAtividade != '0') {
     limparTerminal();
@@ -252,6 +257,7 @@ void menuParticipantesAtividade(Atividade *atividade) {
     printf("➜ ");
 
     scanf(" %c", &opcaoMenuParticipantesAtividade);
+    limparTerminal();
     limparBuffer();
 
     switch(opcaoMenuParticipantesAtividade) {
@@ -264,7 +270,12 @@ void menuParticipantesAtividade(Atividade *atividade) {
         emailParticipante = digitarEmailParticipante();
 
         ListaParticipante *novoParticipante = criarParticipante(matriculaParticipante, nomeParticipante, emailParticipante);
-        inserirParticipante(&atividade->participantes, novoParticipante);
+        int resultado = inserirParticipante(&atividade->participantes, novoParticipante);
+        if (resultado) {
+          printf("Participante inserido com sucesso!");
+        } else {
+          printf("ERRO: Este participante ja foi adicionado");
+        }
 
         free(nomeParticipante);
         free(matriculaParticipante);
@@ -281,13 +292,16 @@ void menuParticipantesAtividade(Atividade *atividade) {
         break;
       case '3':
         matriculaParticipante = digitarMatriculaParticipante();
-        removerParticipante(&atividade->participantes, matriculaParticipante, atividade->pilhaParticipantes);
+        removerParticipante(&atividade->participantes, matriculaParticipante, atividade->pilhaParticipantes, &filaCheckIn);
         free(matriculaParticipante);
         pausarTerminal();
         break;
       case 'Z':
       case 'z':
-        desfazerRemocaoParticipante(&atividade->participantes, atividade->pilhaParticipantes);
+        int result = desfazerRemocaoParticipante(&atividade->participantes, atividade->pilhaParticipantes);
+        if (result) {
+          printf("Participante restaurado com sucesso!");
+        }
         pausarTerminal();
         break;
       case '0':

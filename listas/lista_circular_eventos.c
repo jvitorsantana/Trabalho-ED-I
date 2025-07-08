@@ -91,14 +91,15 @@ ListaEventos* removerEvento(ListaEventos *lista, const char *nome){
     ListaEventos *atual = lista->prox;
     ListaEventos *anterior = lista;
     do{
-        if(strcmp(atual->info.nome, nome)==0){
+        if(strcasecmp(atual->info.nome, nome)==0){
             removerAux(&lista, anterior, atual);
+            printf("Evento removido com sucesso!");
             return lista;
         }
         anterior = atual;
         atual = atual->prox;
     }while(atual != lista->prox);
-    printf("Evento removido com sucesso!");
+    printf("ERRO: Evento nao encontrado!");
     return lista;
 }
 
@@ -149,6 +150,16 @@ void liberarListaCircularEventos(ListaEventos *lista) {
         a_remover = auxiliar;
         auxiliar = auxiliar->prox;
         free(a_remover);
+    }
+
+    if (auxiliar->info.atividades != NULL) {
+        liberarAtividades(auxiliar->info.atividades);
+    }
+    if (auxiliar->info.pilhaAtividades != NULL) {
+        liberarPilhaAtividades(auxiliar->info.pilhaAtividades);
+    }
+    if (auxiliar->info.filaCheckIn != NULL) {
+        liberarFila(auxiliar->info.filaCheckIn);
     }
 
     free(lista);
@@ -231,5 +242,5 @@ void imprimirParticipantesEvento(Evento evento) {
         atual = atual->proximo;
     }
 
-    free(l);
+    liberarListaParticipantes(&listaOrdenada);
 }
